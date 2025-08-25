@@ -1,12 +1,12 @@
 all: main
 
-main: main.tex
-	pdflatex $^
-	bibtex $@
-	pdflatex $^
-	pdflatex $^
+main: main.tex references.bib
+	pdflatex $<
+	biber main
+	pdflatex $<
+	pdflatex $<
 
 
 clean:
-	rm -f *.pdf *.aux *.toc *.out *.bbl *.log *.blg
+	rm -f *.pdf *.aux *.toc *.out *.bbl *.log *.blg *.bcf *.xml
 	rm -f sections/*.aux
