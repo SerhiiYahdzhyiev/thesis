@@ -1,3 +1,68 @@
 \section{Introduction}
 
-TODO: Write introduction... \footcite{agarwal2022hands}
+It is widely acknowledged that the demand for computational power has
+been steadily increasing in the recent years, driven both by advances in
+high-performance computing (HPC) applications and the rapid development of
+artificial intelligence (AI) applications. Recent empirical studies
+highlight that large-scale AI-models training can impose significant
+power requirements at the node level, underscoring the growing importance
+of energy management in computational infrastructures \citep{Latif_2025}.
+Additionaly, international assessments show that digital infrastructures
+will continue to exert considerable pressure on global energy systems \citep{IEA2025_AI_Energy}.
+
+This trend is further accentuated by the global emphasis on sustainable
+development, where the efficient utilization of energy and the
+minimization of environmental impact are increasingly prioritized. In
+HPC environments, energy-aware practices have emerged as critical design
+criteria, as evidenced by initiatives such as the Green500 ranking and
+related analytical studies \citep{GreenHPC}. In order to formulate
+effective optimization strategies, regulatory guidelines, and operational
+policies, it is essential to obtain precise measurements of energy
+consumption across various system components, including central
+processing units (CPUs), graphics processing units (GPUs), memory, and
+interconnects.
+
+Several software frameworks and tools have been developed to facilitate
+the reliable collection of power and energy data (and also other metrics, out of scope of this work).
+Representative examples include
+\emph{EMA} \footcite{EMA_git},
+\emph{Scaphandre} \footcite{Scaphandre},
+\emph{Alumet} \footcite{Alumet},
+\emph{EAR} \footcite{EAR}, and
+\emph{ClusterCockpit} \footcite{ClusterCockpit}.
+Each of these tools aims to integrate energy measurement
+capabilities within broader performance monitoring and management
+workflows.
+
+Among the components of modern computing systems, CPUs occupy a central
+role in both HPC and cloud environments, so understanding their
+energy characteristics is of paramount importance, particularly in the
+context of the evolving CPU market. Although Intel has historically
+maintained a dominant position in server and desktop segments, AMD has
+achieved notable gains over the past decade. Contemporary market analyses
+indicate that AMD has captured a substantial share of both server and
+desktop markets, with penetration exceeding 40\% among consumer systems
+\citep{NetworkWorld2025_Q1ServerShare}. Moreover, economic
+research underscores the strategic significance of competitive dynamics
+and innovation within the microprocessor industry \citep{GoettlerGordon2009_Competition}.
+
+Energy measurement of CPUs is typically facilitated through hardware- and
+firmware-/software- level interfaces exposed to the operating system kernels. Intel
+platforms predominantly employ the Running Average Power Limit (RAPL)
+mechanism, which provides estimations of energy consumption for the CPU
+package and its subcomponents (like DRAM and such). AMD processors offer a
+variety of telemetry mechanisms aside, among which the \texttt{ryzen\_smu}
+driver provides low-level access to power measurement registers. In the same time
+most of the modern AMD CPU model families also support RAPL
+(with some slight differences in realization). Each interface presents distinct trade-offs
+in terms of measurement resolution, accuracy, accessibility, and operational overhead,
+thereby motivating systematic comparative evaluation.
+
+The objective of the present study is to perform a rigorous comparative
+analysis of energy measurement interfaces available on AMD CPUs,
+emphasizing the evaluation of the \texttt{ryzen\_smu} interface and its comparison
+against AMD's realization of RAPL. By characterizing their accuracy,
+resolution, andpractical applicability, this work aims to inform the selection
+of energy monitoring techniques that support both high-fidelity measurement and
+energy-efficient computing practices.
+
