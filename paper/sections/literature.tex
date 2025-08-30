@@ -1,19 +1,86 @@
 \section{Literature Review}
 
-TODO: Think of a plan format for this place...
+The question of measuring and analyzing CPU energy consumption has
+attracted increasing attention in recent years. Several studies have
+focused on the use of the Running Average Power Limit (RAPL) interface,
+which remains the dominant software-accessible mechanism for this
+purpose, while comparatively little research has investigated
+AMD-specific interfaces such as \texttt{ryzen\_smu}.
+
+The following subsection summarizes the most relevant works and
+highlights the persisting gaps that motivate the present research.
 
 \subsection{Related Work}
 
-TODO: Mention related scientific research articles in a format: \\
-	  - Title \\
-	  - 1-2 Paragraphs of summary with the emphasis on topic "gaps", e.g. lacking comparison to ryzen\_smu approach \\
+\textcite{EnergyEffZen2} provide an in-depth analysis of energy
+efficiency characteristics of the AMD Zen~2 architecture. Their
+evaluation employs the RAPL interface in combination with performance
+counters and low-level profiling tools. The focus is primarily on architectural behavior, instruction-level performance, and the
+efficiency of specific micro-architectural features rather than on the
+comparative accuracy of energy measurement techniques themselves.
+Although the work demonstrates how RAPL can be integrated into
+architectural studies, it does not investigate the validity of
+alternative AMD-specific SMU interfaces.
+
+A complementary line of research is represented by
+\textcite{RAPL_Strategies}, who systematically examine strategies for
+employing RAPL to measure energy consumption in high-performance
+computing workflows. Their study emphasizes practical aspects of where
+and how measurements can be integrated into execution pipelines (e.g.,
+at the application code level, through external wrappers, or via plugin
+mechanisms). The authors further explore the relationship between input
+data size and observed energy consumption, offering insights that are
+valuable for workload-level optimization. However, the study is limited
+to methodological strategies around RAPL and does not assess the
+comparative strengths or weaknesses of alternative measurement
+interfaces.
+
+Finally, \textcite{SoftMeasComp} present a broad comparative analysis of
+software-based energy measurement techniques across Intel and AMD
+processors. Their work offers a particularly comprehensive overview of
+the reliability and limitations of RAPL, with detailed discussion of
+operating system integration and implementation differences. Importantly,
+while AMD processors are included in the dataset, the analysis remains
+confined to RAPL-based measurements, without incorporating SMU
+interfaces such as \texttt{ryzen\_smu}. 
+
+Across all three studies, several recurring issues with RAPL are
+identified, including undocumented or poorly defined energy domains,
+potential double-counting in hierarchical aggregation, register
+overflows, and the well-known susceptibility of RAPL to side-channel
+attacks \parencite[see e.g.][]{ RAPL_SideChannel_Spy}.
+These limitations underscore the need for
+systematic evaluation of alternative AMD-specific mechanisms, which this
+work seeks to address.
 
 \subsection{Supporting Documentation}
 
-TODO: Basically the same that at the subsection above just in very \\
-      concise academic manner, with emphasis on how the information \\
-      contributed to the methodology, such things like e.g.: \\
-	     - Intel Developer Manual \\
-		 - ArchWiki Web resource \\
-		 - Red Hat Documentation \\
-		 - AMD Developer Documentation (if applicable) \\
+In addition to research articles, several forms of supporting
+documentation were instrumental in the preparation and execution of
+this study. These resources provided both the practical foundation for
+system configuration and the technical background required for working
+with AMD-specific interfaces, Linux monitoring tools and kernel drivers.
+
+The Red Hat documentation and ArchWiki were frequently consulted during
+system setup and software preparation. These resources were essential in
+the identification and configuration of key tools, including hardware
+monitoring utilities, processor and/or mainboard topology inspection
+tools, kernel modules and drivers, process management mechanisms, etc.
+Beyond initial configuration, both sources served as references for
+troubleshooting and verification of software and hardware functionality for
+target system, thereby contributing directly to the reliability of the
+experimental environment and setup.
+\parencite{RedHat_Docs, ArchWiki}
+
+For AMD-specific mechanisms, official vendor documentation proved less
+useful due to limited accessibility and fragmented nature. In practice,
+one the most valuable reference was the open-source \texttt{ryzen\_smu} kernel
+driver repository \parencite{RyzenSMU_GitHub}. Alongside with the source code
+it contains fairly detailed documentation in its accompanying README.
+To overcome some challenges during methodology development the
+\texttt{ryzen\_monitor} repository was also used as a source of some
+implementation and usage examples of the driver. Direct inspection of the
+mentioned material provided critical insights into available usage variants,
+functions, register mappings, and constraints, which were essential for the
+implementation of the required/missing software parts required for successful
+completions of this research work.
