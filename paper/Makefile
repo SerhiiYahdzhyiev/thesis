@@ -9,5 +9,6 @@ main: main.tex references.bib
 
 
 clean:
-	rm -f *.pdf *.aux *.toc *.out *.bbl *.log *.blg *.bcf *.xml *.glg *.glo *.gls *.ist
+	rm -f *.pdf *.aux *.toc *.out *.bbl *.log *.blg *.bcf *.xml *.glg *.glo \
+	*.gls *.ist *.acn *.acr *.alg
 	rm -f sections/*.aux
