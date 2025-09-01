@@ -1,9 +1,11 @@
 \section{Introduction}
 
+\subsection{Background}
+
 It is widely acknowledged that the demand for computational power has
 been steadily increasing in the recent years, driven both by advances in
-high-performance computing (HPC) applications and the rapid development of
-artificial intelligence (AI). Recent  studies show that large-scale
+high-performance computing \gls{HPC} applications and the rapid development of
+\gls{AI}. Recent  studies show that large-scale
 AI-models training can impose significant power requirements at the node
 level, highlighting the growing importance of energy management in
 computational infrastructures \citep{Latif_2025}. Additionally,
@@ -14,14 +16,13 @@ to exert considerable pressure on global energy systems
 This trend is further accentuated by the global emphasis on sustainable
 development, where the efficient utilization of energy and the
 minimization of environmental impact are increasingly prioritized. In
-HPC environments energy-aware practices have emerged as critical design
+\gls{HPC} environments energy-aware practices have emerged as critical design
 criteria: evidenced by initiatives such as the \emph{Green500} ranking and
 related analytical studies \citep{GreenHPC}. In order to formulate
 effective optimization strategies, regulatory guidelines, and operational
 policies, it is essential to obtain precise measurements of energy
-consumption across various computational system components, including central
-processing units (CPUs), graphics processing units (GPUs), memory, specific 
-network-attached hardware, and interconnects.
+consumption across various computational system components, including \gls{CPU}s,
+\gls{GPU}s, memory, specific network-attached hardware, and interconnects.
 
 Several software frameworks and tools have been developed to facilitate
 the reliable collection of power and energy data (and also other
@@ -37,8 +38,8 @@ capabilities within broader performance monitoring and management
 workflows whiles having various subsets of features and/or
 limitations.
 
-Among the components of modern computing systems, CPUs occupy a central
-role in both \emph{HPC} and \emph{Cloud} environments, so comprehension
+Among the components of modern computing systems, \gls{CPU}s occupy a central
+role in both \gls{HPC} and \emph{Cloud} environments, so comprehension
 of their energy characteristics is of paramount importance, particularly
 in the context of evolving CPU market. Although Intel has historically
 maintained a dominant position in server and desktop segments, AMD has
@@ -49,25 +50,51 @@ desktop markets, with penetration exceeding 40\% among consumer systems
 researches highlight the strategic significance of competitive dynamics
 and innovation within the microprocessor industry \citep{GoettlerGordon2009_Competition}.
 
-Energy measurement of CPUs is typically facilitated through hardware- and
+Energy measurement of \gls{CPU}s is typically facilitated through hardware- and
 firmware-/software- level interfaces exposed to the operating system kernels.
-Intel platforms predominantly employ the Running Average Power Limit (RAPL)
-mechanism, which provides estimations of energy consumption for the CPU
-package and its subdomains (like DRAM and such) mitigating security risks 
-(such as power-based side channel attacks) by including filtering
-behaviour for model-specific registers \cite{IntelRAPL}.
-AMD processors offer a variety of telemetry mechanisms aside, among which
-the \texttt{ryzen\_smu} driver provides low-level access to power
-measurement registers. In the same time most of the modern AMD CPU model
-families also support RAPL (with some slight differences in realization).
-Each interface presents distinct trade-offs in terms of measurement
-resolution, accuracy, accessibility, and operational overhead, thereby
-motivating systematic comparative evaluation.
+Intel platforms predominantly employ the \gls{RAPL} mechanism, which provides
+estimations of energy consumption for the CPU package and its subdomains,
+mitigating security risks (such as power-based side channel attacks) by
+including filtering behaviour for model-specific registers \cite{IntelRAPL}.
 
-The objective of the present study is to perform a rigorous comparative
-analysis of energy measurement interfaces available on AMD CPUs,
-emphasizing the evaluation of the \texttt{ryzen\_smu} interface and its
-comparison against AMD's realization of RAPL. By characterizing their
-accuracy, resolution, and practical applicability, this work aims to
-inform the selection of energy monitoring techniques that support both
-high-fidelity measurement and energy-efficient computing practices.
+AMD processors offer a variety of telemetry mechanisms and \gls{SMU}s aside,
+among which the \texttt{ryzen\_smu} driver provides low-level access to power
+measurement \gls{MSR}s. In the same time most of the modern AMD \gls{CPU} model
+families also support \gls{RAPL} (with some slight differences in realization).
+
+Each interface presents distinct trade-offs in terms of measurements
+accuracy, accessibility, and operational overhead. This motivates a
+systematic comparative evaluation.
+
+\subsection{Problem Statement}
+
+The landscape of \gls{CPU} energy measurement interfaces on AMD platforms is
+characterized by the coexistence of vendor-specific solutions and
+adaptations of mechanisms originally designed for Intel \gls{CPU}s. In
+particular, the availability of both the \texttt{ryzen\_smu} interface
+and AMD's realization of the \gls{RAPL} mechanism introduces uncertainty in the
+selection of appropriate tools for high-fidelity measurement and
+integration with existing monitoring frameworks. While \gls{RAPL} is widely
+adopted in academic and industrial contexts, its port to AMD hardware
+differs in certain aspects and has its specific limitations. Conversely, the
+\texttt{ryzen\_smu} driver offers access to low-level telemetry, yet its
+practical benefits over \gls{RAPL} remain largely unexplored.
+
+\subsection{Research Questions}
+
+To address this gap, the present work formulates the following research
+questions:
+
+\begin{itemize}
+  \item What are the advantages and limitations of using the
+  \texttt{ryzen\_smu} interface for energy monitoring on AMD \gls{CPU}s in
+  comparison with the AMD implementation of \gls{RAPL}?
+  \item How do the two interfaces differ in terms of measurement accuracy,
+  resolution, and stability under various workloads?
+  \item What is the relative overhead associated with each interface, and
+  how does it impact their suitability for integration into performance
+  monitoring and management frameworks and tools?
+  \item In which scenarios could AMD-specific interfaces provide a tangible
+  advantage over \gls{RAPL} (e.g., higher granularity, lower latency, or
+  integration simplicity)?
+\end{itemize}
