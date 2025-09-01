@@ -1,8 +1,8 @@
 \section{Literature Review}
 
-The question of measuring and analyzing CPU energy consumption has
+The question of measuring and analyzing \gls{CPU} energy consumption has
 attracted increasing attention in recent years. Several studies have
-focused on the use of the Running Average Power Limit (RAPL) interface,
+focused on the use of the \gls{RAPL} interface,
 which remains the dominant software-accessible mechanism for this
 purpose, while comparatively little research has investigated
 AMD-specific interfaces such as \texttt{ryzen\_smu}.
@@ -12,49 +12,48 @@ highlights the persisting gaps that motivate the present research.
 
 \subsection{Related Work}
 
-\textcite{EnergyEffZen2} provide an in-depth analysis of energy
-efficiency characteristics of the AMD Zen~2 architecture. Their
-evaluation employs the RAPL interface in combination with performance
-counters and low-level profiling tools. The focus is primarily on
-architectural behavior, instruction-level performance, and the
-efficiency of specific micro-architectural features rather than on the
-comparative accuracy of energy measurement techniques themselves.
-Although the work demonstrates how RAPL can be integrated into
-architectural studies, it does not investigate the validity of
-alternative AMD-specific SMU interfaces.
+\textcite{EnergyEffZen2} provide an in-depth analysis of energy efficiency
+characteristics of the AMD Zen 2 architecture. Their evaluation employs the
+\gls{RAPL} interface in combination with performance counters and low-level
+profiling tools. The focus is primarily on architectural behavior,
+instruction-level performance, and the efficiency of specific
+micro-architectural features rather than on the comparative accuracy of
+energy measurement techniques themselves.
 
-A complementary line of research is represented by
-\textcite{RAPL_Strategies}, who systematically examine strategies for
-employing RAPL to measure energy consumption in high-performance
-computing workflows. Their study emphasizes practical aspects of where
-and how measurements can be integrated into execution pipelines (e.g.,
-at the application code level, through external wrappers, or via plugin
-mechanisms). The authors further explore the relationship between input
-data size and observed energy consumption, offering insights that are
-valuable for workload-level optimization. However, the study is limited
-to methodological strategies around RAPL and does not assess the
-comparative strengths or weaknesses of alternative measurement
-interfaces.
+Although the work demonstrates how \gls{RAPL} can be integrated into
+architectural studies, it does not investigate the validity of
+alternative AMD-specific \gls{SMU} interfaces.
+
+A complementary line of research is represented by \textcite{RAPL_Strategies},
+who systematically examine strategies for employing \gls{RAPL} to measure
+energy consumption in high-performance computing workflows. Their study
+emphasizes practical aspects of where and how measurements can be integrated
+into execution pipelines (e.g., at the application code level, through external
+wrappers, or via plugin mechanisms). The authors further explore the relationship
+between input data size and observed energy consumption, offering insights
+that are valuable for workload-level optimization. However, the study is limited
+to methodological strategies around \gls{RAPL} and does not assess the
+comparative strengths or weaknesses of alternative measurement interfaces.
 
 Finally, \textcite{SoftMeasComp} present a broad comparative analysis of
 software-based energy measurement techniques across Intel and AMD
 processors. Their work offers a particularly comprehensive overview of
-the reliability and limitations of RAPL, with detailed discussion of
+the reliability and limitations of \gls{RAPL}, with detailed discussion of
 operating system integration and implementation differences. Importantly,
 while AMD processors are included in the dataset, the analysis remains
-confined to RAPL-based measurements, without incorporating SMU
+confined to RAPL-based measurements, without incorporating \gls{SMU}
 interfaces such as \texttt{ryzen\_smu}. 
 
-Across all three studies, several recurring issues with RAPL are
+Across all three studies, several recurring issues with \gls{RAPL} are
 identified, including undocumented or poorly defined energy domains,
 potential double-counting in hierarchical aggregation, register
-overflows, and the well-known susceptibility of RAPL to side-channel
+overflows, and the well-known susceptibility of \gls{RAPL} to side-channel
 attacks \parencite[see e.g.][]{ RAPL_SideChannel_Spy}.
 These limitations underscore the need for
 systematic evaluation of alternative AMD-specific mechanisms, which this
 work seeks to address.
 
-Since all the studies mentioned above used RAPL extensively, they were also
+Since all the studies mentioned above used \gls{RAPL} extensively, they where also
 used to infer useful technical information, insights and references, allowing
 the author to extend the contextual understanding of the interface.
 
