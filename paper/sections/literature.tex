@@ -15,7 +15,8 @@ highlights the persisting gaps that motivate the present research.
 \textcite{EnergyEffZen2} provide an in-depth analysis of energy
 efficiency characteristics of the AMD Zen~2 architecture. Their
 evaluation employs the RAPL interface in combination with performance
-counters and low-level profiling tools. The focus is primarily on architectural behavior, instruction-level performance, and the
+counters and low-level profiling tools. The focus is primarily on
+architectural behavior, instruction-level performance, and the
 efficiency of specific micro-architectural features rather than on the
 comparative accuracy of energy measurement techniques themselves.
 Although the work demonstrates how RAPL can be integrated into
@@ -53,9 +54,9 @@ These limitations underscore the need for
 systematic evaluation of alternative AMD-specific mechanisms, which this
 work seeks to address.
 
-Since all the studies mentioned above used RAPL extensively, they where also
+Since all the studies mentioned above used RAPL extensively, they were also
 used to infer useful technical information, insights and references, allowing
-author to extend authors context and understanding of the interface.
+the author to extend the contextual understanding of the interface.
 
 \subsection{Supporting Documentation}
 
@@ -82,9 +83,16 @@ one the most valuable reference was the open-source \texttt{ryzen\_smu} kernel
 driver repository \parencite{RyzenSMU_GitHub}. Alongside with the source code
 it contains fairly detailed documentation in its accompanying README.
 To overcome some challenges during methodology development the
-\texttt{ryzen\_monitor} repository was also used as a source of some
-implementation and usage examples of the driver. Direct inspection of the
-mentioned material provided critical insights into available usage variants,
-functions, register mappings, and constraints, which were essential for the
-implementation of the required/missing software parts required for successful
-completions of this research work.
+\texttt{ryzen\_monitor} repository \footcite{RyzenMonitor_GitHub} was also used
+as a source of some implementation and usage examples of the driver. Direct
+inspection of the mentioned material provided critical insights into available
+usage variants, functions, register mappings, and constraints, which were essential
+for the implementation of the required/missing software parts required for
+successful completions of this research.
+
+Intel’s official developer manuals, which are widely regarded
+as a reference standard in terms of accessibility and comprehensiveness,
+were used primarily as a comparative benchmark \parencite{Intel_SDM}. Their
+structured presentation of hardware interfaces and architectural features
+highlighted the relative scarcity and fragmentation of AMD-specific documentation.
+
