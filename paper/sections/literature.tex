@@ -95,3 +95,50 @@ were used primarily as a comparative benchmark \parencite{Intel_SDM}. Their
 structured presentation of hardware interfaces and architectural features
 highlighted the relative scarcity and fragmentation of AMD-specific documentation.
 
+\subsubsection{Official Telemetry Sources}
+
+This study relies on a combination of vendor documentation, official
+tools, and in-band libraries to establish a reproducible and verifiable
+telemetry baseline for AMD hardware. These sources provide the
+architectural context, recommended system tuning, and API/driver-level
+details required to implement and validate measurement adapters.
+
+\begin{itemize}
+  \item \textbf{AMD architecture and power whitepapers.} Official AMD
+  whitepapers describe the System Management Unit (SMU), per-die agents,
+  and power domains on EPYC/Ryzen platforms. These documents are used to
+  define measurement scope (which hardware domains are exposed), to
+  interpret telemetry semantics, and to justify the comparability
+  between SMU-derived and RAPL-derived metrics
+  \parencite{AMD_EPYC_9004_8004_PowerMgmt_2024,
+  AMD_EPYC_5th_Arch_2024}.
+
+  \item \textbf{AMD tooling (uProf).} The AMD uProf tool and its user
+  guide provide examples of power- and performance-counter collection.
+  uProf is employed as an authoritative cross-check for RAPL/MSR-based
+  measurements and as a sanity check for measurement workflows
+  \parencite{AMD_uProf_UG_2022}.
+
+  \item \textbf{In-band libraries and E-SMI.} Libraries such as E-SMI
+  (esmi\_ib\_library) expose programmatic access to SMU/EPYC telemetry.
+  These APIs were consulted for implementation patterns and (where
+  applicable) used to validate readings obtained through the
+  \texttt{ryzen\_smu} driver \parencite{AMD_esmi_ib_library}.
+
+  \item \textbf{Tuning and platform configuration guides.} Official
+  platform tuning guides and vendor recommendations (OS tuning, CPU
+  governors, BIOS settings) were followed to ensure reproducible test
+  conditions and to avoid systemic distortions of power measurements
+  \parencite{AMD_RHEL_Tuning_9004_2024}.
+
+  \item \textbf{Security and limitations.} Research on power-reporting
+  side channels motivates conservative interpretation of high-resolution
+  telemetry and informs safety/privacy mitigations when exposing raw
+  power or energy counters \parencite{PwrLeak_2023}.
+\end{itemize}
+
+The combined use of these official documents and tools supports: (i)
+correct identification of measurement domains; (ii) reproducible
+platform configuration; (iii) selection of implementation approaches for
+the SMU-to-energy adapter; and (iv) principled discussion of the
+limitations and security considerations of telemetry sources.
