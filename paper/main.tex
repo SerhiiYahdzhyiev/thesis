@@ -11,6 +11,9 @@
 \usepackage{hyperref}
 \usepackage[acronym]{glossaries}
 \usepackage[style=authoryear,natbib=true,backend=biber]{biblatex}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{cleveref}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \addbibresource{references.bib}
@@ -72,4 +75,6 @@
 \renewcommand{\bibname}{References}
 \printbibliography
 \printglossaries
+\appendix
+\input{appendices/setup.tex}
 \end{document}
