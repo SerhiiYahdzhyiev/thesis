@@ -1,5 +1,45 @@
 \section{Future Work}
 
-- Test More CPU Architectures of AMD
-- Test More Telemetry Interfaces of AMD
-- Evaluate Measurements on individual CPU Cores
+Despite the promising results obtained in this study, the scope of the evaluation
+has been limited by time and hardware availability. Consequently, a number of
+important directions remain open for future work. Addressing these aspects could
+provide a more comprehensive understanding of the applicability and robustness
+of power and energy monitoring approaches on AMD processors.
+
+First, a broader evaluation across a larger set of AMD \gls{CPU} families should
+be carried out. While this work focused on desktop-class Zen~2 processors (e.g.,
+Matisse), server-grade AMD EPYC \gls{CPU}s are increasingly deployed in modern
+clusters and data centers. Investigating the behavior of energy and power
+counters, scaling properties, and reliability of readings across different EPYC
+generations (e.g., Rome, Milan, Genoa) would be of particular relevance for
+high-performance computing environments and cloud infrastructures
+\parencite{hackenberg2019epyc}.
+
+Second, a systematic comparison between the available AMD software stacks could
+enrich the findings. For instance, AMD’s official ecosystem tools such as the
+\textit{e-SMI} library provide access to low-level telemetry and power
+management functionality, but their coverage and stability differ from both
+\gls{RAPL} and the EMA extensions considered in this work. Comparative studies
+between \textit{e-SMI}, \gls{RAPL}, and EMA-based plugins could clarify
+trade-offs in accuracy, portability, and performance overhead
+\parencite{amd2022esmi}.
+
+In addition to vendor-provided libraries, the community maintains several Linux
+kernel drivers and user-space utilities, including the well-known
+\textit{Zenpower} driver. Evaluating these open-source solutions side by side
+with vendor tools would not only provide insights into their accuracy and
+usability but also highlight the potential for cross-validation of results in
+research and operational settings.
+
+Finally, although this study focused exclusively on Linux, extending the
+methodology to other operating systems could be beneficial. In particular,
+investigating the availability of similar low-level counters and power
+management interfaces under Windows could reveal whether analogous monitoring
+approaches can be generalized beyond Unix-like environments. While the
+practicality of this direction depends on driver and \gls{API} support, it may
+open opportunities for cross-platform benchmarking and validation.
+
+In summary, future work should prioritize a more diverse hardware base,
+systematic cross-tool comparisons, and potentially cross-platform studies. Taken
+together, these directions would contribute to a more complete and reliable
+assessment of energy monitoring capabilities on modern AMD processors.
