@@ -41,7 +41,7 @@ processors. Their work offers a particularly comprehensive overview of
 the reliability and limitations of \gls{RAPL}, with detailed discussion of
 operating system integration and implementation differences. Importantly,
 while AMD processors are included in the dataset, the analysis remains
-confined to RAPL-based measurements, without incorporating \gls{SMU}
+confined to \gls{RAPL}-based measurements, without incorporating \gls{SMU}
 interfaces such as \texttt{ryzen\_smu}. 
 
 Across all three studies, several recurring issues with \gls{RAPL} are
@@ -95,12 +95,23 @@ were used primarily as a comparative benchmark \parencite{Intel_SDM}. Their
 structured presentation of hardware interfaces and architectural features
 highlighted the relative scarcity and fragmentation of AMD-specific documentation.
 
+A complementary source of technical insight is the informal GitHub
+repository \\\emph{plops/ryzen\_managment\_linux}, which provides annotated
+explanations of the low-level behavior of the \texttt{ryzen\_smu} driver
+interface. In particular, the author highlights that the SMU driver is
+\emph{on-demand} rather than polling, and implements an internal throttling
+mechanism—limiting \gls{SMU} refreshes to at most 1 kHz—even if userspace attempts
+to poll faster \parencite{ryzen_managment_linux}. While this project is not a
+formal documentation, it helps to understand practical limitations of
+the \texttt{pm\_table} interface and guides decisions about sampling
+frequency and overhead optimization during plugin implementation.
+
 \subsubsection{Official Telemetry Sources}
 
 This study relies on a combination of vendor documentation, official
 tools, and in-band libraries to establish a reproducible and verifiable
 telemetry baseline for AMD hardware. These sources provide the
-architectural context, recommended system tuning, and API/driver-level
+architectural context, recommended system tuning, and \gls{API}/driver-level
 details required to implement and validate measurement adapters.
 
 \begin{itemize}
@@ -113,20 +124,14 @@ details required to implement and validate measurement adapters.
   \parencite{AMD_EPYC_9004_8004_PowerMgmt_2024,
   AMD_EPYC_5th_Arch_2024}.
 
-  \item \textbf{AMD tooling (uProf).} The AMD uProf tool and its user
-  guide provide examples of power- and performance-counter collection.
-  uProf is employed as an authoritative cross-check for RAPL/MSR-based
-  measurements and as a sanity check for measurement workflows
-  \parencite{AMD_uProf_UG_2022}.
-
   \item \textbf{In-band libraries and E-SMI.} Libraries such as E-SMI
   (esmi\_ib\_library) expose programmatic access to SMU/EPYC telemetry.
-  These APIs were consulted for implementation patterns and (where
+  These \gls{API}s were consulted for implementation patterns and (where
   applicable) used to validate readings obtained through the
   \texttt{ryzen\_smu} driver \parencite{AMD_esmi_ib_library}.
 
   \item \textbf{Tuning and platform configuration guides.} Official
-  platform tuning guides and vendor recommendations (OS tuning, CPU
+    platform tuning guides and vendor recommendations (OS tuning, \gls{CPU}
   governors, BIOS settings) were followed to ensure reproducible test
   conditions and to avoid systemic distortions of power measurements
   \parencite{AMD_RHEL_Tuning_9004_2024}.
@@ -139,6 +144,6 @@ details required to implement and validate measurement adapters.
 
 The combined use of these official documents and tools supports: (i)
 correct identification of measurement domains; (ii) reproducible
-platform configuration; (iii) selection of implementation approaches for
-the SMU-to-energy adapter; and (iv) principled discussion of the
-limitations and security considerations of telemetry sources.
+platform configuration; (iii) selection of implementation approaches fo
+the \gls{SMU}-to-energy adapter; and (iv) principled discussion of the limitations
+and security considerations of telemetry sources.
