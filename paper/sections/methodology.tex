@@ -1,23 +1,46 @@
 \section{Methodology}
 
-TODO: Write a plan
+\subsection{Energy Measurement Framework}
 
-\subsection{Tools and Frameworks}
+For this study, the \gls{EMA} framework was selected as the primary tool
+for collecting energy consumption data. The choice was motivated by several
+key advantages:
 
-- Measurements: EMA
-    - Provide argumentation for choosing
-    - Highlight pros (compared to alternatives)
-- Data Processing and Visualization (TBD)
-- Benchmark Application (Artificial Workload Generator)
+\begin{itemize}
+    \item \textbf{In-code integration:} \gls{EMA} allows precise measurement of
+          energy consumption for specific regions of application code,
+          enabling multiple benchmarks to be integrated within a single code base.
+    \item \textbf{Plugin-based extensibility:} The framework supports multiple
+          hardware measurement backends (e.g., \gls{RAPL}, Ryzen-specific sensors)
+          concurrently through a uniform public interface, without modifying
+          the application source.
+      \item \textbf{Reliability:} \gls{EMA} handles common measurement pitfalls,
+          such as counter overflows in \gls{MSR}s, ensuring accurate and
+          consistent data.
+    \item \textbf{Familiarity and openness:} Authors have prior experience with
+          \gls{EMA} and contributed to its development, facilitating integration
+          and future tool improvements.
+\end{itemize}
 
-\subsection{EMA}
+\gls{EMA}'s architecture is structured into layers, as illustrated in
+\cref{fig:ema_arch}. The core of the framework is the \emph{Plugin} system,
+which encapsulates device-specific measurement logic while exposing a
+consistent interface to the user. The \emph{User Layer} provides both
+high-level and low-level \gls{API}s: the high-level \gls{API} offers macros
+for defining measurement regions directly in code, whereas the low-level
+\gls{API} allows fine-grained control over plugin management, region
+lifecycles, and data output.\parencite{NAAICE}
 
-- Architecture Overview
-- Used Plugins
+These design choices make \gls{EMA} well-suited for integrating energy
+measurements into experimental workloads and benchmarks, supporting
+reproducibility and direct comparison across different measurement backends
+\parencite{NAAICE}.
 
-\subsection{Target System}
+\begin{figure}
+    \centering
+    \includegraphics[width=\columnwidth]{assets/ema_arch}
+    \caption{High-level architecture of \gls{EMA}.}
+    \label{fig:ema_arch}
+\end{figure}
 
-- Specs
-   - OS (Distro)
-- Configurations (if applicable)
-- Considerations
+\subsection{Ryzen Plugin}
