@@ -6,7 +6,11 @@ A repository for the Bachelor Thesis paper and Viva Presentation Slides.
 
 - `paper` - subdirectory for latex sources (and supporting assets) for
             bachelor thesis paper
+
 - `slides` - subdirectory for viva presentation slides
+
+- `code` - subdirectory holding source codes for tools and programs used
+           to complete this thesis
 
 ## Dependencies/Requirements
 
