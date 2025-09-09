@@ -82,19 +82,20 @@ practical benefits over \gls{RAPL} remain largely unexplored.
 
 \subsection{Research Questions}
 
-To address this gap, the present work formulates the following research
-questions:
+Considering the above following research questions were formulated:
 
-\begin{itemize}
-  \item What are the advantages and limitations of using the
-  \texttt{ryzen\_smu} interface for energy monitoring on AMD \gls{CPU}s in
-  comparison with the AMD implementation of \gls{RAPL}?
-  \item How do the two interfaces differ in terms of measurement accuracy,
-  resolution, and stability under various workloads?
-  \item What is the relative overhead associated with each interface, and
-  how does it impact their suitability for integration into performance
-  monitoring and management frameworks and tools?
-  \item In which scenarios could AMD-specific interfaces provide a tangible
-  advantage over \gls{RAPL} (e.g., higher granularity, lower latency, or
-  integration simplicity)?
-\end{itemize}
+\begin{enumerate}
+  \item To what extent do energy measurements obtained from the
+        \gls{SMU} (\emph{PM-table}) and \gls{RAPL} interfaces for the
+        \emph{package} and \emph{core} domains agree in terms of accuracy and
+        the absence of systematic bias?
+  \item How strongly do the temporal dynamics of SMU and RAPL measurements
+        correlate, and are there observable lags or shifts between the two
+        time series?
+  \item What are the limits of agreement (Bland--Altman) and the magnitude of
+        errors (RMSE, MAE, MAPE), and to what degree are the two interfaces
+        interchangeable in practical energy measurement tasks?
+  \item How do differences in the supported sampling rates between RAPL and
+        SMU affect the temporal resolution of measurements, and what are the
+        implications for future high-frequency profiling?
+\end{enumerate}
