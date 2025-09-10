@@ -36,8 +36,8 @@ This section describes the contents of the `code` subdirectory.
 
 ### General Dependencies
 
-1. [ryzen_smu]() kernel driver.
-2. [GNU Make]()
+1. [ryzen_smu](https://github.com/amkillam/ryzen_smu) kernel driver.
+2. [GNU Make](https://www.gnu.org/software/make/).
 
 ### Build
 
@@ -65,4 +65,5 @@ To build run `make bench`.
 
 #### Dependencies
 
-1. [EMA]()
+1. [EMA](https://github.com/PERFACCT/EMA)
+2. [stress-ng](https://github.com/ColinIanKing/stress-ng)
