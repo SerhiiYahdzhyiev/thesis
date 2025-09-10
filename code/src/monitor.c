@@ -86,8 +86,8 @@ int main()
         fprintf(stdout, "\e[?25l");
         fflush(stdout);
         struct timespec t, _;
-        t.tv_sec = 0;
-        t.tv_nsec  = 1e6;
+        t.tv_sec = 1;
+        t.tv_nsec  = 0;
         nanosleep(&t, &_);
     }
 
