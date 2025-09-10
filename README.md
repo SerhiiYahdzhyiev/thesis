@@ -12,6 +12,9 @@ A repository for the Bachelor Thesis paper and Viva Presentation Slides.
 - `code` - subdirectory holding source codes for tools and programs used
            to complete this thesis
 
+- `scripts` - subdirectory holding some supporting helper scripts used to
+              gather data for this research
+
 ## Dependencies/Requirements
 
 1. [Tex Live](https://tug.org/texlive/). - A distribution of LaTeX that I've used.
@@ -25,10 +28,6 @@ A repository for the Bachelor Thesis paper and Viva Presentation Slides.
 1. Navigate to `paper` subdirectory: `cd paper`.
 2. Build main pdf file with: `make`.
 3. (Optional) Use `make clean` to clean out all the auxilary files created by `pdflatex` and `bibtex`.
-
-## License
-
-This project is licensed under [MIT License](https://en.wikipedia.org/wiki/MIT_License).
 
 ## Code
 
@@ -67,3 +66,8 @@ To build run `make bench`.
 
 1. [EMA](https://github.com/PERFACCT/EMA)
 2. [stress-ng](https://github.com/ColinIanKing/stress-ng)
+
+## License
+
+This project is licensed under [MIT License](https://en.wikipedia.org/wiki/MIT_License).
+
