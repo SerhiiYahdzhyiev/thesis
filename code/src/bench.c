@@ -1,25 +1,25 @@
-#include <EMA/region/region.user.h>
-#include <stddef.h>
-#include <stdio.h>
 #include <stdlib.h>
-#include <threads.h>
-
 #include <unistd.h>
 
 #include <EMA.h>
 
-#define CORES 6
 #define SIZE_CMD 128
 
 int main(int argc, char **argv)
 {
     char cmd[SIZE_CMD], cmd2[SIZE_CMD];
+    int cores = sysconf(_SC_NPROCESSORS_ONLN);
 
-    sprintf(cmd, "stress-ng --cpu %d --timeout 10s", CORES);
+    sprintf(
+        cmd,
+        "stress-ng --no-rand-seed --cpu %d --timeout 10s > /dev/null 2>&1",
+        cores
+    );
     sprintf(
         cmd2,
-        "stress-ng --cpu %d --backoff 1000000 --timeout 10s",
-        CORES
+        "stress-ng --no-rand-seed --cpu %d --backoff 1000000 "
+        "--timeout 10s > /dev/null 2>&1",
+        cores
     );
 
     int err = EMA_init(NULL);
@@ -29,7 +29,7 @@ int main(int argc, char **argv)
         return 1;
     }
     EMA_REGION_DECLARE(region1);
-    EMA_REGION_DEFINE_WITH_FILTER(&region1, "all_static_10s", NULL);
+    EMA_REGION_DEFINE_WITH_FILTER(&region1, "static_10s", NULL);
 
     EMA_REGION_BEGIN(region1);
 
@@ -49,7 +49,7 @@ int main(int argc, char **argv)
     EMA_REGION_END(region2);
 
     EMA_REGION_DECLARE(region3);
-    EMA_REGION_DEFINE_WITH_FILTER(&region3, "all_burst_10s", NULL);
+    EMA_REGION_DEFINE_WITH_FILTER(&region3, "burst_10s", NULL);
 
     EMA_REGION_BEGIN(region3);
 
