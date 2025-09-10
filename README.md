@@ -29,3 +29,40 @@ A repository for the Bachelor Thesis paper and Viva Presentation Slides.
 ## License
 
 This project is licensed under [MIT License](https://en.wikipedia.org/wiki/MIT_License).
+
+## Code
+
+This section describes the contents of the `code` subdirectory.
+
+### General Dependencies
+
+1. [ryzen_smu]() kernel driver.
+2. [GNU Make]()
+
+### Build
+
+Run `make` (from `code` sub-directory) to build all the executables/utilities
+at once.
+
+### Profiler
+
+Used to test the possible sampling/polling rate of `ryzen_smu`.
+
+To build run `make profile`.
+
+### Monitor
+
+Striped/modified version of just energy values monitoring from `ryzen_smu`'s
+user-space utility `monitor_cpu`.
+
+To build run `make monitor`.
+
+### Benchmark
+
+An executable used to collect the energy measurements data.
+
+To build run `make bench`.
+
+#### Dependencies
+
+1. [EMA]()
