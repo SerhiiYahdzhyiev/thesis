@@ -1,69 +1,65 @@
+#include <EMA/region/region.user.h>
 #include <stddef.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <threads.h>
 
 #include <unistd.h>
 
 #include <EMA.h>
 
+#define CORES 6
+#define SIZE_CMD 128
+
 int main(int argc, char **argv)
 {
-    printf("Initializing EMA...\n");
+    char cmd[SIZE_CMD], cmd2[SIZE_CMD];
+
+    sprintf(cmd, "stress-ng --cpu %d --timeout 10s", CORES);
+    sprintf(
+        cmd2,
+        "stress-ng --cpu %d --backoff 1000000 --timeout 10s",
+        CORES
+    );
+
     int err = EMA_init(NULL);
     if( err )
     {
-        printf("Failed to initialize EMA: %d\n", err);
+        fprintf(stderr, "error: failed to initialize EMA: %d\n", err);
         return 1;
     }
+    EMA_REGION_DECLARE(region1);
+    EMA_REGION_DEFINE_WITH_FILTER(&region1, "all_static_10s", NULL);
 
-    PluginPtrArray plugins = EMA_get_plugins();
-    printf("Number of plugins: %lu\n", plugins.size);
-    for(size_t i = 0; i < plugins.size; ++i)
-        printf("Plugin %lu: %s\n", i, EMA_get_plugin_name(plugins.array[i]));
+    EMA_REGION_BEGIN(region1);
 
-    DevicePtrArray devices = EMA_get_devices();
-    printf("Number of devices: %lu\n", devices.size);
-    for(size_t i = 0; i < devices.size; ++i) {
-        printf("Device %lu: %s\n", i, EMA_get_device_name(devices.array[i]));
-        printf("Device %lu: uid: %s\n", i, EMA_get_device_uid(devices.array[i]));
-        printf("Device %lu: type: %s\n", i, EMA_get_device_type(devices.array[i]));
-    }
+    system(cmd);
 
-    /* Filter. */
-    Filter *filter = EMA_filter_exclude_plugin("NVML");
-
-    /* Lower-level API. */
-    printf("Region 1\n");
-    static thread_local Region *region = NULL;
-    EMA_region_create_and_init(&region, "r1", filter, "", 0, "");
-
-    EMA_region_begin(region);
+    EMA_REGION_END(region1);
 
     sleep(2);
 
-    EMA_region_end(region);
-    EMA_region_finalize(region);
-
-    /* Higher-level API. */
-    printf("Region 2\n");
     EMA_REGION_DECLARE(region2);
-    EMA_REGION_DEFINE_WITH_FILTER(&region2, "r2", filter);
+    EMA_REGION_DEFINE_WITH_FILTER(&region2, "idle_10s", NULL);
 
     EMA_REGION_BEGIN(region2);
 
-    sleep(2);
+    sleep(10);
 
     EMA_REGION_END(region2);
-   
-    EMA_filter_finalize(filter);
 
-    printf("Output:\n");
-    EMA_print_all(stdout);
+    EMA_REGION_DECLARE(region3);
+    EMA_REGION_DEFINE_WITH_FILTER(&region3, "all_burst_10s", NULL);
 
-    printf("Finalizing EMA...\n");
+    EMA_REGION_BEGIN(region3);
+
+    system(cmd2);
+
+    EMA_REGION_END(region3);
+
     err = EMA_finalize();
     if (err) {
-        printf("Failed to finalize EMA: %d\n", err);
+        fprintf(stderr, "error: failed to finalize EMA: %d\n", err);
         return 1;
     }
 
