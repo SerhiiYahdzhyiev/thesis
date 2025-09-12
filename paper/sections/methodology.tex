@@ -221,3 +221,61 @@ reproducibility and direct comparison across different measurement backends
 \end{figure}
 
 \subsection{Ryzen Plugin}
+
+To enable in--code energy measurements on AMD Zen~2 processors, a custom
+\textit{Ryzen} plugin was implemented for the \gls{EMA} framework.%
+\footnote{Source code available at
+\url{https://github.com/SerhiiYahdzhyiev/EMA/tree/ryzen_plugin}.}
+
+The plugin uses the \texttt{libsmu} userspace library to access the CPU's
+SMU telemetry (PM-table) and selected SMN registers. Readouts obtained
+from the SMU are exposed to EMA as standard \texttt{Device} objects and
+thereby integrate with EMA's region-based measurement model.
+
+During initialization the plugin queries the SMU (via \texttt{libsmu})
+to determine the platform codename and available telemetry fields. For
+each logical measurement domain the plugin creates a \texttt{Device}:
+\begin{itemize}
+  \item \emph{package} — total socket (socket / package) power;
+  \item \emph{core}  — aggregated power of all CPU cores;
+  \item \emph{core.\(i\)} — per-core power measurements when available.
+\end{itemize}
+This device hierarchy enables reporting both coarse (socket) and finer
+(per-core) energy estimates and matches EMA's device abstraction.
+
+The plugin samples instantaneous power values \(P\) (in watts) from the
+PM-table at time points \(t_k\). Energy is accumulated numerically
+using a zero-order hold (rectangular) rule:
+\[
+  E(t_k) = E(t_{k-1}) + P(t_{k-1}) \cdot \Delta t,
+\]
+with \(\Delta t = t_k - t_{k-1}\). In SI units this yields energy in
+joules since \(P\,[\mathrm{W}]\cdot\Delta t\,[\mathrm{s}] = E\,[\mathrm{J}]\).
+In the implementation we keep internal counters in microjoules; hence,
+when \(\Delta t\) is computed in microseconds the update reduces to:
+\[
+  E_{\mu\mathrm{J}} \mathrel{+}= P_{\mathrm{W}} \cdot \Delta t_{\mu\mathrm{s}}.
+\]
+The plugin stores a per-device timestamp to compute \(\Delta t\) and
+exposes the accumulated microjoules via EMA's API.
+
+\paragraph{Practical considerations:}
+\begin{itemize}
+  \item The integration method above corresponds to a rectangular
+    approximation (zero-order hold). It is simple and deterministic,
+    but it can miss short high-power spikes if the sampling cadence is
+    too low; this limitation is discussed above in the thesis.
+  \item The plugin uses dynamic mapping from platform codename to SMN
+    offsets (table of known addresses), enabling reuse across several
+    Ryzen/EPYC codename variants.
+  \item For RAPL/MSR measurements EMA's overflow utilities are applied
+    to handle counter wraparound; for SMU readings wrap behavior is
+    handled according to the SMU field semantics.
+\end{itemize}
+
+On finalization the plugin releases the \texttt{libsmu} context and
+frees all per-device structures registered with EMA.
+
+This concise design allows simultaneous collection of SMU (Ryzen) and
+RAPL data within the same experimental run, which is required for the
+comparative analysis described in this study.
