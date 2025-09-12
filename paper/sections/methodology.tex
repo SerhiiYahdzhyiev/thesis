@@ -147,7 +147,6 @@ the \gls{SMU}-to-energy adapter; and (iv) principled discussion of the limitatio
 and security considerations of telemetry sources.
 
 \subsection{Limitations and Considerations}
-\label{sec:limitations}
 
 Several limitations should be acknowledged regarding the measurement setup
 and methodology.
@@ -157,7 +156,7 @@ constraint on the update frequency of energy counters. Independent of how
 often the counters are read, their effective resolution is limited to about
 1~kHz. This design choice has been discussed in the context of limiting the
 risk of side-channel attacks exploiting high-resolution power traces
-\cite{intel_rapl,wang2023power}.
+\parencite{IntelRAPL, PwrLeak_2023}.
 
 In contrast, preliminary experiments with the Ryzen \gls{SMU} driver suggest
 substantially higher sampling capabilities. Power values from the PM-table can
@@ -166,16 +165,16 @@ offering the potential for higher temporal resolution than RAPL. While this
 feature was not systematically explored in the present study, it indicates a
 promising direction for future research. A minimal reference implementation
 used for polling-rate validation is available in the supplementary repository
-\cite{yahdzhyiev2025repo}.
+\parencite{yahdzhyiev2025repo}.
 
 Second, it must be emphasized that the Ryzen \gls{SMU} driver employed in this
 work is not an official AMD release. Its functionality is largely the result
 of community-driven reverse engineering efforts
-\cite{ryzen_monitor,plops2025ryzen}. Consequently, exact semantics of some
-registers and tables remain partially undocumented, which may introduce
-uncertainties in the interpretation of results. Nevertheless, such community
-tools represent the current state of the art for accessing low-level telemetry
-on AMD platforms in the absence of official vendor support.
+\parencite{RyzenMonitor_GitHub,ryzen_managment_linux}. Consequently, exact
+semantics of some registers and tables remain partially undocumented, which may
+introduce uncertainties in the interpretation of results. Nevertheless, such
+community tools represent the current state of the art for accessing low-level
+telemetry on AMD platforms in the absence of official vendor support.
 
 \subsection{Energy Measurement Framework}
 
@@ -199,6 +198,13 @@ key advantages:
           and future tool improvements.
 \end{itemize}
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth]{assets/ema_arch}
+    \caption{High-level architecture of \gls{EMA}.}
+    \label{fig:ema_arch}
+\end{figure}
+
 \gls{EMA}'s architecture is structured into layers, as illustrated in
 \cref{fig:ema_arch}. The core of the framework is the \emph{Plugin} system,
 which encapsulates device-specific measurement logic while exposing a
@@ -213,11 +219,77 @@ measurements into experimental workloads and benchmarks, supporting
 reproducibility and direct comparison across different measurement backends
 \parencite{NAAICE}.
 
-\begin{figure}
-    \centering
-    \includegraphics[width=\columnwidth]{assets/ema_arch}
-    \caption{High-level architecture of \gls{EMA}.}
-    \label{fig:ema_arch}
-\end{figure}
-
 \subsection{Ryzen Plugin}
+
+\subsection{Benchmark Application and Automation}
+
+To generate controlled CPU workloads, a custom benchmark utility was
+implemented in~\parencite{yahdzhyiev2025repo} (see source in
+\path{bench.c}). The program integrates directly with \gls{EMA} to define
+multiple \emph{Measurement Regions} that emulate distinct workload patterns:
+
+\begin{itemize}
+  \item \textbf{Short (burst) region}: a high-intensity section designed to
+        create transient spikes in CPU activity.
+  \item \textbf{Long (steady) region}: a sustained, compute-bound section
+        providing a stable baseline for energy measurements.
+\end{itemize}
+
+During each run the script \lstinline|run_measurements.sh|
+(\cref{lst:run-measurements}) automates repeated executions and
+programmatically switches the CPU frequency-scaling governor to
+\emph{performance} mode before all measurements (and switches it back after).
+This ensures that energy measurements capture the effect of dynamic frequency
+scaling policies on both burst and steady workloads. Governor switching is
+achieved through the standard \texttt{cpupower} interface provided by the Linux
+kernel.
+
+For load generation, the benchmark uses a \texttt{stress-ng} to saturate the
+available CPU resources within each measurement region. All measurements
+are collected via \gls{EMA}, enabling simultaneous recording of
+\gls{RAPL}- and \gls{SMU}-based power data.
+
+\begin{lstlisting}[language=bash,caption={Automation script for benchmark runs},
+label={lst:run-measurements}]
+#!/bin/bash
+
+set -e
+
+BENCH="bench"
+RUNS=$1
+SLEEP_BETWEEN=5
+LOGDIR="./logs"
+
+if [ -z "$RUNS" ]; then
+    echo "Usage: $0 <num_runs>"
+    exit 1
+fi
+
+mkdir -p "$LOGDIR"
+GOVFILE="/tmp/orig_governors.txt"
+
+sudo touch $GOVFILE
+sudo chown root:root $GOVFILE
+
+> "$GOVFILE"
+for cpu in /sys/devices/system/cpu/cpu[0-9]*; do
+    gov=$(cat "$cpu/cpufreq/scaling_governor")
+    echo "$cpu $gov" >> "$GOVFILE"
+done
+
+for cpu in /sys/devices/system/cpu/cpu[0-9]*; do
+    echo performance | sudo tee "$cpu/cpufreq/scaling_governor" >/dev/null
+done
+
+for i in $(seq 1 $RUNS); do
+    ts=$(date +"%Y-%m-%d_%H-%M-%S")
+    logfile="$LOGDIR/run_${i}_$ts.log"
+    echo "[RUN $i/$RUNS] $(date)" | tee -a "$logfile"
+    $BENCH | tee -a "$logfile"
+    sleep $SLEEP_BETWEEN
+done
+
+while read -r cpu gov; do
+    echo $gov | sudo tee "$cpu/cpufreq/scaling_governor" >/dev/null
+done < "$GOVFILE"
+\end{lstlisting}
