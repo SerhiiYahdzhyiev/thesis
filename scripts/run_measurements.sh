@@ -4,7 +4,7 @@ set -e
 
 BENCH="bench"
 RUNS=$1
-SLEEP_BETWEEN=5
+SLEEP_BETWEEN=15
 LOGDIR="./logs"
 
 if [ -z "$RUNS" ]; then
