@@ -13,8 +13,9 @@ high degree of dynamic correlation.
 \end{minipage}
 \end{equation*}
 
-To evaluate this hypothesis, a combination of complementary statistical methods
-was applied:
+To evaluate this hypothesis following complementary statistical methods were
+applied:
+
 \begin{itemize}
     \item the Wilcoxon signed-rank test to detect potential systematic bias,
     \item Pearson's correlation coefficient and cross-correlation analysis
@@ -29,11 +30,7 @@ This combination of tests was selected to capture different aspects of agreement
 between the two measurement sources: Wilcoxon provides sensitivity to systematic
 shifts in central tendency, correlation and cross-correlation focus on temporal
 coherence and dynamic similarity, while Bland–Altman and error metrics assess
-the absolute level of agreement and practical interchangeability.  
-
-All measurement series were re-sampled to a uniform time step of 100–200~ms.  
-In cases where a lag was detected between the compared signals, one series was
-shifted accordingly prior to performing the statistical tests.
+the absolute level of agreement and practical interchangeability.
 
 \subsection{Test System Setup}
 
@@ -52,7 +49,7 @@ the software stack and driver versions used during the experiments.
 The experiments were conducted on an up-to-date Arch Linux (rolling release)
 installation with Linux kernel version 6.16.4-arch1-1.
 
-Additional details on the compiler toolchain, installed kernel headers, and
+Additional details on the compiler tool-chain, installed kernel headers, and
 device drivers are provided in \cref{app:swspec}.
 
 \subsection{Supporting Documentation}
@@ -78,14 +75,25 @@ For AMD-specific mechanisms, official vendor documentation proved less
 useful due to limited accessibility and fragmented nature. In practice,
 one the most valuable reference was the open-source \texttt{ryzen\_smu} kernel
 driver repository \parencite{RyzenSMU_GitHub}. Alongside with the source code
-it contains fairly detailed documentation in its accompanying README.
-To overcome some challenges during methodology development the
-\texttt{ryzen\_monitor} repository \footcite{RyzenMonitor_GitHub} was also used
-as a source of some implementation and usage examples of the driver. Direct
-inspection of the mentioned material provided critical insights into available
-usage variants, functions, register mappings, and constraints, which were essential
-for the implementation of the required/missing software parts required for
-successful completions of this research.
+it contains documentation in its accompanying README. To overcome some
+challenges during methodology development the \texttt{ryzen\_monitor} repository
+\footcite{RyzenMonitor_GitHub} was also used as a source of implementation and
+usage (programmatic) examples of the driver. Direct inspection of mentioned
+materials provided critical insights into available usage variants, functions,
+\gls{PM} tables' mappings, and constraints, which were essential for the
+implementation of the required/missing software parts required for successful
+completions of this research.
+
+A complementary source of technical insight is the informal GitHub
+repository \\\emph{plops/ryzen\_managment\_linux}, which provides annotated
+explanations of the low-level behavior of the \texttt{ryzen\_smu} driver
+interface. In particular, the author highlights that the \gls{SMU} driver is
+\emph{on-demand} rather than polling, and implements an internal throttling
+mechanism—limiting \gls{SMU} refreshes to at most 1 kHz—even if user-space
+attempts to poll faster \parencite{ryzen_managment_linux}. While this project
+is not a formal documentation, it helps to understand practical limitations of
+the \texttt{pm\_table} interface and guides decisions about sampling
+frequency and overhead optimization during plugin implementation.
 
 Intel’s official developer manuals, which are widely regarded
 as a reference standard in terms of accessibility and comprehensiveness,
@@ -93,60 +101,19 @@ were used primarily as a comparative benchmark \parencite{Intel_SDM}. Their
 structured presentation of hardware interfaces and architectural features
 highlighted the relative scarcity and fragmentation of AMD-specific documentation.
 
-A complementary source of technical insight is the informal GitHub
-repository \\\emph{plops/ryzen\_managment\_linux}, which provides annotated
-explanations of the low-level behavior of the \texttt{ryzen\_smu} driver
-interface. In particular, the author highlights that the SMU driver is
-\emph{on-demand} rather than polling, and implements an internal throttling
-mechanism—limiting \gls{SMU} refreshes to at most 1 kHz—even if userspace attempts
-to poll faster \parencite{ryzen_managment_linux}. While this project is not a
-formal documentation, it helps to understand practical limitations of
-the \texttt{pm\_table} interface and guides decisions about sampling
-frequency and overhead optimization during plugin implementation.
-
-\subsubsection{Official Telemetry Sources}
-
-This study relies on a combination of vendor documentation, official
-tools, and in-band libraries to establish a reproducible and verifiable
-telemetry baseline for AMD hardware. These sources provide the
-architectural context, recommended system tuning, and \gls{API}/driver-level
-details required to implement and validate measurement adapters.
+The combined use of above-mentioned sources contributes to several points of this
+work:
 
 \begin{itemize}
-  \item \textbf{AMD architecture and power whitepapers.} Official AMD
-  whitepapers describe the System Management Unit (SMU), per-die agents,
-  and power domains on EPYC/Ryzen platforms. These documents are used to
-  define measurement scope (which hardware domains are exposed), to
-  interpret telemetry semantics, and to justify the comparability
-  between SMU-derived and RAPL-derived metrics
-  \parencite{AMD_EPYC_9004_8004_PowerMgmt_2024,
-  AMD_EPYC_5th_Arch_2024}.
-
-  \item \textbf{In-band libraries and E-SMI.} Libraries such as E-SMI
-  (esmi\_ib\_library) expose programmatic access to SMU/EPYC telemetry.
-  These \gls{API}s were consulted for implementation patterns and (where
-  applicable) used to validate readings obtained through the
-  \texttt{ryzen\_smu} driver \parencite{AMD_esmi_ib_library}.
-
-  \item \textbf{Tuning and platform configuration guides.} Official
-    platform tuning guides and vendor recommendations (OS tuning, \gls{CPU}
-  governors, BIOS settings) were followed to ensure reproducible test
-  conditions and to avoid systemic distortions of power measurements
-  \parencite{AMD_RHEL_Tuning_9004_2024}.
-
-  \item \textbf{Security and limitations.} Research on power-reporting
-  side channels motivates conservative interpretation of high-resolution
-  telemetry and informs safety/privacy mitigations when exposing raw
-  power or energy counters \parencite{PwrLeak_2023}.
+    \item Correct identification of measurement domains.
+    \item Reproducible platform configuration.
+    \item Selection of implementation approaches for the \gls{SMU}-to-energy
+        conversion.
+    \item Principled discussion of the limitations and security considerations.
 \end{itemize}
 
-The combined use of these official documents and tools supports: (i)
-correct identification of measurement domains; (ii) reproducible
-platform configuration; (iii) selection of implementation approaches fo
-the \gls{SMU}-to-energy adapter; and (iv) principled discussion of the limitations
-and security considerations of telemetry sources.
-
 \subsection{Limitations and Considerations}
+\label{sec:limncons}
 
 Several limitations should be acknowledged regarding the measurement setup
 and methodology.
@@ -159,13 +126,13 @@ risk of side-channel attacks exploiting high-resolution power traces
 \parencite{IntelRAPL, PwrLeak_2023}.
 
 In contrast, preliminary experiments with the Ryzen \gls{SMU} driver suggest
-substantially higher sampling capabilities. Power values from the PM-table can
-be polled at microsecond-scale intervals without immediately saturating, thus
-offering the potential for higher temporal resolution than RAPL. While this
-feature was not systematically explored in the present study, it indicates a
-promising direction for future research. A minimal reference implementation
-used for polling-rate validation is available in the supplementary repository
-\parencite{yahdzhyiev2025repo}.
+substantially higher sampling capabilities. Power values from the \gls{PM} table
+can be polled at microsecond-scale intervals without immediately saturating,
+thus offering the potential for higher temporal resolution than \gls{RAPL}.
+While this feature was not systematically explored in the present study, it
+indicates a promising direction for future research. A minimal reference
+implementation used for polling-rate validation is available in the supplementary
+repository \parencite{yahdzhyiev2025repo}.
 
 Second, it must be emphasized that the Ryzen \gls{SMU} driver employed in this
 work is not an official AMD release. Its functionality is largely the result
@@ -174,7 +141,8 @@ of community-driven reverse engineering efforts
 semantics of some registers and tables remain partially undocumented, which may
 introduce uncertainties in the interpretation of results. Nevertheless, such
 community tools represent the current state of the art for accessing low-level
-telemetry on AMD platforms in the absence of official vendor support.
+telemetry on AMD platforms (for older architectures and desktop models
+predominantly) in the absence of official vendor support.
 
 \subsection{Energy Measurement Framework}
 
@@ -209,29 +177,34 @@ key advantages:
 \cref{fig:ema_arch}. The core of the framework is the \emph{Plugin} system,
 which encapsulates device-specific measurement logic while exposing a
 consistent interface to the user. The \emph{User Layer} provides both
-high-level and low-level \gls{API}s: the high-level \gls{API} offers macros
-for defining measurement regions directly in code, whereas the low-level
-\gls{API} allows fine-grained control over plugin management, region
-lifecycles, and data output.\parencite{NAAICE}
+high-level and low-level \gls{API}s:
+\begin{itemize}
+    \item The high-level \gls{API} offers macros for defining measurement
+        regions directly in code. 
+    \item The low-level \gls{API} allows fine-grained control over plugin
+        management, region life-cycles, and data output.
+\end{itemize}
+\parencite{NAAICE}
 
 These design choices make \gls{EMA} well-suited for integrating energy
 measurements into experimental workloads and benchmarks, supporting
-reproducibility and direct comparison across different measurement backends
+reproducibility and direct comparison across different measurement back-ends
 \parencite{NAAICE}.
 
 \subsection{Ryzen Plugin}
 
-To enable in--code energy measurements on AMD Zen~2 processors, a custom
-\textit{Ryzen} plugin was implemented for the \gls{EMA} framework.%
+To enable in--code energy measurements on AMD processors, a custom
+\textit{Ryzen} plugin was implemented for the \gls{EMA} framework.
 \footnote{Source code available at
 \url{https://github.com/SerhiiYahdzhyiev/EMA/tree/ryzen_plugin}.}
 
-The plugin uses the \texttt{libsmu} userspace library to access the CPU's
-SMU telemetry (PM-table) and selected SMN registers. Readouts obtained
-from the SMU are exposed to EMA as standard \texttt{Device} objects and
+The plugin uses the \texttt{libsmu} \footcite{RyzenSMU_GitHub} user-space
+library to access the \gls{CPU}'s \gls{SMU} telemetry (\gls{PM} Table) and
+selected \gls{SMN} registers. Readouts obtained
+from the \gls{SMU} are exposed to \gls{EMA} as standard \texttt{Device} objects and
 thereby integrate with EMA's region-based measurement model.
 
-During initialization the plugin queries the SMU (via \texttt{libsmu})
+During initialization the plugin queries the \gls{SMU} (via \texttt{libsmu})
 to determine the platform codename and available telemetry fields. For
 each logical measurement domain the plugin creates a \texttt{Device}:
 \begin{itemize}
@@ -240,23 +213,23 @@ each logical measurement domain the plugin creates a \texttt{Device}:
   \item \emph{core.\(i\)} — per-core power measurements when available.
 \end{itemize}
 This device hierarchy enables reporting both coarse (socket) and finer
-(per-core) energy estimates and matches EMA's device abstraction.
+(per-core) energy estimates and matches \gls{EMA}'s device abstraction.
 
 The plugin samples instantaneous power values \(P\) (in watts) from the
-PM-table at time points \(t_k\). Energy is accumulated numerically
+\gls{PM} Table at time points \(t_k\). Energy is accumulated numerically
 using a zero-order hold (rectangular) rule:
 \[
   E(t_k) = E(t_{k-1}) + P(t_{k-1}) \cdot \Delta t,
 \]
 with \(\Delta t = t_k - t_{k-1}\). In SI units this yields energy in
 joules since \(P\,[\mathrm{W}]\cdot\Delta t\,[\mathrm{s}] = E\,[\mathrm{J}]\).
-In the implementation we keep internal counters in microjoules; hence,
+In the implementation we keep internal counters in micro-joules; hence,
 when \(\Delta t\) is computed in microseconds the update reduces to:
 \[
   E_{\mu\mathrm{J}} \mathrel{+}= P_{\mathrm{W}} \cdot \Delta t_{\mu\mathrm{s}}.
 \]
-The plugin stores a per-device timestamp to compute \(\Delta t\) and
-exposes the accumulated microjoules via EMA's API.
+The plugin stores a per-device time-stamp to compute \(\Delta t\) and
+exposes the accumulated micro-joules via \gls{EMA}'s API.
 
 \paragraph{Practical considerations:}
 \begin{itemize}
@@ -264,33 +237,35 @@ exposes the accumulated microjoules via EMA's API.
     approximation (zero-order hold). It is simple and deterministic,
     but it can miss short high-power spikes if the sampling cadence is
     too low; this limitation is discussed above in the thesis.
-  \item The plugin uses dynamic mapping from platform codename to SMN
+  \item The plugin uses dynamic mapping from platform codename to \gls{SMN}
     offsets (table of known addresses), enabling reuse across several
-    Ryzen/EPYC codename variants.
-  \item For RAPL/MSR measurements EMA's overflow utilities are applied
-    to handle counter wraparound; for SMU readings wrap behavior is
-    handled according to the SMU field semantics.
+    Ryzen codename variants.
+  \item For \gls{RAPL}/\gls{MSR} measurements \gls{EMA}'s overflow utilities
+    are applied to handle counter wraparound; for \gls{SMU} readings wrap
+    behavior is handled according to the \gls{SMU} field semantics.
 \end{itemize}
 
 On finalization the plugin releases the \texttt{libsmu} context and
-frees all per-device structures registered with EMA.
+frees all per-device structures registered with \gls{EMA}.
 
-This concise design allows simultaneous collection of SMU (Ryzen) and
-RAPL data within the same experimental run, which is required for the
+This concise design allows simultaneous collection of \gls{SMU} (Ryzen) and
+\gls{RAPL} data within the same experimental run, which is required for the
 comparative analysis described in this study.
 
 \subsection{Benchmark Application and Automation}
 
-To generate controlled CPU workloads, a custom benchmark utility was
+To generate controlled \gls{CPU} workloads, a custom benchmark utility was
 implemented in~\parencite{yahdzhyiev2025repo} (see source in
 \path{bench.c}). The program integrates directly with \gls{EMA} to define
 multiple \emph{Measurement Regions} that emulate distinct workload patterns:
 
 \begin{itemize}
-  \item \textbf{Short (burst) region}: a high-intensity section designed to
-        create transient spikes in CPU activity.
-  \item \textbf{Long (steady) region}: a sustained, compute-bound section
-        providing a stable baseline for energy measurements.
+  \item A short steady high computational load region.
+  \item A short idle load region (sleep).
+  \item A long steady high computational load region.
+  \item A long steady high computational load region.
+  \item A short region with burst (spiked) computational load.
+  \item A long region with burst (spiked) computational load.
 \end{itemize}
 
 During each run the script \lstinline|run_measurements.sh|
@@ -302,52 +277,7 @@ scaling policies on both burst and steady workloads. Governor switching is
 achieved through the standard \texttt{cpupower} interface provided by the Linux
 kernel.
 
-For load generation, the benchmark uses a \texttt{stress-ng} to saturate the
-available CPU resources within each measurement region. All measurements
-are collected via \gls{EMA}, enabling simultaneous recording of
+For load generation, the benchmark uses a \texttt{stress-ng} \parencite{stress-ng}
+to saturate the available CPU resources within each measurement region.
+All measurements are collected via \gls{EMA}, enabling simultaneous recording of
 \gls{RAPL}- and \gls{SMU}-based power data.
-
-\begin{lstlisting}[language=bash,caption={Automation script for benchmark runs},
-label={lst:run-measurements}]
-#!/bin/bash
-
-set -e
-
-BENCH="bench"
-RUNS=$1
-SLEEP_BETWEEN=5
-LOGDIR="./logs"
-
-if [ -z "$RUNS" ]; then
-    echo "Usage: $0 <num_runs>"
-    exit 1
-fi
-
-mkdir -p "$LOGDIR"
-GOVFILE="/tmp/orig_governors.txt"
-
-sudo touch $GOVFILE
-sudo chown root:root $GOVFILE
-
-> "$GOVFILE"
-for cpu in /sys/devices/system/cpu/cpu[0-9]*; do
-    gov=$(cat "$cpu/cpufreq/scaling_governor")
-    echo "$cpu $gov" >> "$GOVFILE"
-done
-
-for cpu in /sys/devices/system/cpu/cpu[0-9]*; do
-    echo performance | sudo tee "$cpu/cpufreq/scaling_governor" >/dev/null
-done
-
-for i in $(seq 1 $RUNS); do
-    ts=$(date +"%Y-%m-%d_%H-%M-%S")
-    logfile="$LOGDIR/run_${i}_$ts.log"
-    echo "[RUN $i/$RUNS] $(date)" | tee -a "$logfile"
-    $BENCH | tee -a "$logfile"
-    sleep $SLEEP_BETWEEN
-done
-
-while read -r cpu gov; do
-    echo $gov | sudo tee "$cpu/cpufreq/scaling_governor" >/dev/null
-done < "$GOVFILE"
-\end{lstlisting}
