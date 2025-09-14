@@ -13,10 +13,11 @@
 \usepackage[style=authoryear,natbib=true,backend=biber]{biblatex}
 \usepackage{tabularx}
 \usepackage{booktabs}
-\usepackage{cleveref}
 \usepackage{listings}
+\usepackage{cleveref}
 \usepackage{xcolor}
 \usepackage{siunitx}
+\usepackage{multicol}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \lstset{
@@ -29,6 +30,9 @@
   commentstyle=\color{gray},
   captionpos=b
 }
+
+\crefname{listing}{listing}{listings}
+\Crefname{listing}{Listing}{Listings}
 
 \addbibresource{references.bib}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -78,6 +82,7 @@
 
 \include{abstract}
 \tableofcontents 
+\clearpage
 
 \pagenumbering{arabic}
 \input{sections/introduction}
@@ -91,4 +96,8 @@
 \printglossaries
 \appendix
 \input{appendices/setup.tex}
+\clearpage
+\input{appendices/listings.tex}
+\clearpage
+\input{appendices/outputs.tex}
 \end{document}
