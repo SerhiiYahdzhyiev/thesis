@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -Iinclude -Iext/libsmu -Icommon
 
-all: monitor profile
+all: bench monitor profile
 
 monitor: ext/libsmu/libsmu.c common/utils.c src/monitor.c
 	$(CC) $(CFLAGS) -o $@ $^
