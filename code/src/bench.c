@@ -9,7 +9,7 @@
 void make_cmd(char* dest, int cores, int seconds) {
     sprintf(
         dest,
-        "stress-ng --no-rand-seed --cpu %d --timeout %ds > /dev/null 2>&1",
+        "stress-ng --no-rand-seed --cpu %d --timeout %ds 2>&1",
         cores, seconds
     );
 }
