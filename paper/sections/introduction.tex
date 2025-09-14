@@ -58,8 +58,9 @@ firmware-/software- level interfaces exposed to the \gls{OS} kernels.
 
 Intel platforms predominantly employ the \gls{RAPL} mechanism, which provides
 estimations of energy consumption for the \gls{CPU} package and its subdomains,
-mitigating security risks (such as power-based side channel attacks) by
-including filtering behaviour for model-specific registers.\parencite{IntelRAPL}
+mitigating security risks (such as power-based side channel attacks
+\parencite{PwrLeak_2023}) by including filtering behaviour for model-specific
+registers.\parencite{IntelRAPL}
 
 AMD processors offer a variety of telemetry mechanisms and \gls{SMU}s aside,
 among which the \texttt{ryzen\_smu} \parencite{RyzenSMU_GitHub} driver provides
@@ -92,7 +93,7 @@ Considering the above following research questions were formulated:
 
 \begin{enumerate}
   \item To what extent do energy measurements obtained from the
-        \gls{SMU} (\emph{PM-table}) and \gls{RAPL} interfaces for the
+        \gls{SMU} (\gls{PM} Table) and \gls{RAPL} interfaces for the
         \emph{package} and \emph{core} domains agree in terms of accuracy and
         the absence of systematic bias?
   \item How strongly do the temporal dynamics of SMU and RAPL measurements
