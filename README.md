@@ -67,7 +67,18 @@ To build run `make bench`.
 1. [EMA](https://github.com/PERFACCT/EMA)
 2. [stress-ng](https://github.com/ColinIanKing/stress-ng)
 
+## Scripts
+
+### Prerequisites
+
+1. [Python3](https://pyton.org/downloads).
+2. `venv` module or any other tool to manage Python's virtual environments.
+
+### Setup environment
+
+1. Create virtual environment and activate it.
+2. Install packages from `requirements.txt` file in the root of this repo. 
+
 ## License
 
 This project is licensed under [MIT License](https://en.wikipedia.org/wiki/MIT_License).
-
