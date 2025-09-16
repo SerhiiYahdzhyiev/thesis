@@ -240,9 +240,9 @@ exposes the accumulated micro-joules to the \gls{EMA}'s API.
   \item The plugin uses dynamic mapping from platform codename to \gls{SMN}
     offsets (table of known addresses), enabling reuse across several
     Ryzen codename variants.
-  \item For \gls{RAPL}/\gls{MSR} measurements \gls{EMA}'s overflow utilities
-    are applied to handle counter wraparound; for \gls{SMU} readings wrap
-    behavior is handled according to the \gls{SMU} field semantics.
+  \item For \gls{RAPL}/\gls{MSR} measurements \gls{EMA}'s overflow handling utilities
+    are applied to handle counter wraparound; for plugin readings thou the handling
+    behavior is disabled due to lack of required values for polling rate calculation.
 \end{itemize}
 
 On finalization the plugin releases the \texttt{libsmu} context and
