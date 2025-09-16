@@ -5,6 +5,10 @@ A repository for the Bachelor Thesis paper and Viva Presentation Slides.
 ## Contents
 
 - `data` - subdirectory for raw primary data gathered for this research.
+
+- `dumps` - subdirectory for target system state dumps (running services,
+            sockets, processes, etc)
+
 - `paper` - subdirectory for latex sources (and supporting assets) for
             bachelor thesis paper
 
@@ -14,7 +18,7 @@ A repository for the Bachelor Thesis paper and Viva Presentation Slides.
            to complete this thesis
 
 - `scripts` - subdirectory holding some supporting helper scripts used to
-              gather data for this research
+              gather data for this research and collect dumps
 
 ## Dependencies/Requirements
 
