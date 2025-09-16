@@ -43,7 +43,7 @@ subsets of features and/or limitations.
 Among the components of modern computing systems, \gls{CPU}s occupy a central
 role in both \gls{HPC} and \emph{Cloud} environments, so comprehension
 of their energy characteristics is of great importance, particularly
-in the context of evolving CPU market. Although, Intel has historically
+in the context of evolving \gls{CPU} market. Although, Intel has historically
 maintained a dominant position in server and desktop segments, AMD has
 achieved notable gains over the past decade. Contemporary market analyses
 indicate that AMD has captured a substantial share of both server and
@@ -96,13 +96,10 @@ Considering the above following research questions were formulated:
         \gls{SMU} (\gls{PM} Table) and \gls{RAPL} interfaces for the
         \emph{package} and \emph{core} domains agree in terms of accuracy and
         the absence of systematic bias?
-  \item How strongly do the temporal dynamics of SMU and RAPL measurements
-        correlate, and are there observable lags or shifts between the two
-        time series?
-  \item What are the limits of agreement (Bland--Altman) and the magnitude of
-        errors (RMSE, MAE, MAPE), and to what degree are the two interfaces
-        interchangeable in practical energy measurement tasks?
-  \item How do differences in the supported sampling rates between RAPL and
-        SMU affect the temporal resolution of measurements, and what are the
-        implications for future high-frequency profiling?
+      \item What is the magnitude of errors (\gls{RMSE}, \gls{MAE}, \gls{MAPE}),
+        and to what degree are the two interfaces theoretically interchangeable
+        in practical energy measurement tasks?
+      \item How do differences in the supported sampling rates between
+        \gls{RAPL} and \gls{SMU} affect the temporal resolution of measurements,
+        and what are the implications for future high-frequency energy profiling?
 \end{enumerate}
