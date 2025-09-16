@@ -4,6 +4,7 @@ A repository for the Bachelor Thesis paper and Viva Presentation Slides.
 
 ## Contents
 
+- `data` - subdirectory for raw primary data gathered for this research.
 - `paper` - subdirectory for latex sources (and supporting assets) for
             bachelor thesis paper
 
@@ -37,6 +38,7 @@ This section describes the contents of the `code` subdirectory.
 
 1. [ryzen_smu](https://github.com/amkillam/ryzen_smu) kernel driver.
 2. [GNU Make](https://www.gnu.org/software/make/).
+3. Essential build tools (c compiler of choice).
 
 ### Build
 
@@ -82,3 +84,4 @@ To build run `make bench`.
 ## License
 
 This project is licensed under [MIT License](https://en.wikipedia.org/wiki/MIT_License).
+For external parts (prefixed or contained in the parent directlry `ext`) see nested `LICENSE` files.
