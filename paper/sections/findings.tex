@@ -4,10 +4,11 @@
 
 Despite the statement in \textcite{ryzen_managment_linux} that \texttt{ryzen\_smu}
 driver intentionally limits the refresh rate to approximately 1 milli-second
-small practical tests/experiments with \texttt{monitor} (\cref{lst:monitor}) and
-\texttt{profile} (\cref{lst:profile}) showed the possibility of obtaining
-distinct energy readings from \gls{PM} Table on much higher rates
-(approx. 1 micro-second) (as also mentioned in \cref{sec:limncons}).
+small practical tests/experiments with \texttt{monitor}
+(see \footcite{yahdzhyiev2025repo} \path{code/src/monitor.c}) and \texttt{profile}
+(see \footcite{yahdzhyiev2025repo} \path{code/src/profile.c}) showed the
+possibility of obtaining distinct energy readings from \gls{PM} Table on much
+higher rates (approx. 1 micro-second) (as also mentioned in \cref{sec:limncons}).
 
 The outputs of \texttt{sudo ./profile} with polling/sampling rate set to
 1 micro-second can be inspected in \cref{app:outputs}.
