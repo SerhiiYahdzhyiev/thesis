@@ -291,8 +291,24 @@ Non-essential services such as the graphical desktop environment, audio stack,
 Bluetooth, and other user-oriented daemons were manually disabled.
 Complete \texttt{systemd} service and process state dumps were recorded
 before main experiment run to document the exact runtime configuration. The
-corresponding dump files and the shell scripts used to generate them are included
-in the project repository \footcite{yahdzhyiev2025repo} for full reproducibility.
+corresponding dump files and the shell script (\cref{lst:dump}) used to generate
+them are included in the project repository \footcite{yahdzhyiev2025repo}
+for full reproducibility.
+
+\begin{lstlisting}[language=bash,caption={Script for systemd state dump},
+label={lst:dump}]
+#!/bin/bash
+
+set -e
+
+systemctl list-units --all > baseline_units.txt
+systemctl list-units --state=running > baseline_running.txt
+systemctl list-unit-files --state=enabled > baseline_enabled.txt
+systemctl list-sockets --all > baseline_sockets.txt
+systemctl list-timers --all > baseline_timers.txt
+
+ps -eo pid,ppid,cmd,%cpu --sort=%cpu > baseline-ps.txt
+\end{lstlisting}
 
 Raw energy-measurement outputs were subsequently processed using a set of custom
 Python scripts. These scripts perform data filtering and validation,
