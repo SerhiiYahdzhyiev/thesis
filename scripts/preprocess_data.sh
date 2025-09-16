@@ -38,6 +38,8 @@ def process_data(rows: list[dict], runid: int):
     ]
 
 def write_csv(path: Path, data: list[dict]):
+    out_path = Path("./processed") / f"{path.name}.processed.csv"
+    out_path.parent.mkdir(parents=True, exist_ok=True)
     with open(
             Path(f"./processed/{path.name}.processed.csv"),
             "w", encoding="utf-8"
