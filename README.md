@@ -85,6 +85,14 @@ To build run `make bench`.
 1. Create virtual environment and activate it.
 2. Install packages from `requirements.txt` file in the root of this repo. 
 
+### Build plots
+
+1. Activate the virtual environment and install requirements if not done already.
+2. Navigate to a directory with raw data e.g. `cd data/test_run`.
+3. Run: `../../scripts/preprocess_data.sh`.
+4. Run: `../../scripts/visualize.sh`.
+5. Inspect `.png`s in created `plots` sub-directory.
+
 ## License
 
 This project is licensed under [MIT License](https://en.wikipedia.org/wiki/MIT_License).
