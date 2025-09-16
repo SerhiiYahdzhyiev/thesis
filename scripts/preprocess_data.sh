@@ -25,13 +25,14 @@ def filter_data(rows: list[dict]):
 def get_plugin_type(row: dict):
     return "RAPL" if "CPU" in row['device_name'] else "RYZEN"
 
-def process_data(rows: list[dict]):
+def process_data(rows: list[dict], runid: int):
     return [
         {
             'plugin': get_plugin_type(r),
             'region': r['region_idf'],
             'energy_uj': int(r['energy']),
-            'time_us': int(r['time'])
+            'time_us': int(r['time']),
+            'runid': runid
         }
         for r in rows
     ]
@@ -56,11 +57,12 @@ def main():
         raise Exception('No data to process!')
 
     for rp in os.listdir('.'):
-        if rp != "logs" and rp != "processed":
+        if rp != "logs" and rp != "processed" and rp != "plots":
             path = Path(rp)
+            runid = int(path.name.split('.')[2])
             data = read_csv(path)
             filtered = filter_data(data)
-            processed = process_data(filtered)
+            processed = process_data(filtered, runid)
             write_csv(path, processed)
 
 if __name__ == "__main__":
