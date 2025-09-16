@@ -23,15 +23,21 @@ def plot_ax(ax, data, name, plugin):
     ax.set_xlabel('Runs')
     ax.set_title(name + plugin)
 
-def plot_region(name: str, data: list[dict]):
-    fig, axs = plt.subplots(1, 2, figsize=(15, 5))
+def plot_region(axs, i: int, name: str, data: list[dict]):
+    fig, axs2 = plt.subplots(1, 2, figsize=(15, 5))
     region_data = [d for d in data if d['region'] == name]
     smu = [d for d in region_data if d['plugin'] != "RAPL"]
     rapl = [d for d in region_data if d['plugin'] == "RAPL"]
 
-    plot_ax(axs[0], smu, name, '_ryzen_smu')
-    plot_ax(axs[1], rapl, name, '_rapl')
-    plt.savefig('plots/' + name)
+    plot_ax(axs[i][0], smu, name, '_ryzen_smu')
+    plot_ax(axs[i][1], rapl, name, '_rapl')
+
+    plot_ax(axs2[0], smu, name, '_ryzen_smu')
+    plot_ax(axs2[1], rapl, name, '_rapl')
+
+    out_path = Path("./plots/") / name
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig('plots/' + out_path.name)
 
 
 def main():
@@ -53,8 +59,15 @@ def main():
 
 
     regions = {d['region'] for d in data }
+
+    fig, axs = plt.subplots(5, 2, figsize=(15, 25))
+    i = 0
     for r in regions:
-        plot_region(r, data)
+        plot_region(axs, i, r, data)
+        i = i + 1
+    out_path = Path("./plots/") / "regions"
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig('plots/' + "regions")
 
 if __name__ == "__main__":
     main()
