@@ -1,0 +1,32 @@
+LISTEN                                     UNIT                                        ACTIVATES
+audit 1                                    systemd-journald-audit.socket               systemd-journald.service
+kobject-uevent 1                           systemd-udevd-kernel.socket                 systemd-udevd.service
+route 1361                                 systemd-networkd.socket                     systemd-networkd.service
+/dev/rfkill                                systemd-rfkill.socket                       systemd-rfkill.service
+/etc/pacman.d/gnupg/S.dirmngr              dirmngr@etc-pacman.d-gnupg.socket           dirmngr@etc-pacman.d-gnupg.service
+/etc/pacman.d/gnupg/S.gpg-agent            gpg-agent@etc-pacman.d-gnupg.socket         gpg-agent@etc-pacman.d-gnupg.service
+/etc/pacman.d/gnupg/S.gpg-agent.browser    gpg-agent-browser@etc-pacman.d-gnupg.socket gpg-agent@etc-pacman.d-gnupg.service
+/etc/pacman.d/gnupg/S.gpg-agent.extra      gpg-agent-extra@etc-pacman.d-gnupg.socket   gpg-agent@etc-pacman.d-gnupg.service
+/etc/pacman.d/gnupg/S.gpg-agent.ssh        gpg-agent-ssh@etc-pacman.d-gnupg.socket     gpg-agent@etc-pacman.d-gnupg.service
+/etc/pacman.d/gnupg/S.keyboxd              keyboxd@etc-pacman.d-gnupg.socket           keyboxd@etc-pacman.d-gnupg.service
+/run/dbus/system_bus_socket                dbus.socket                                 dbus-broker.service
+/run/dmeventd-client                       dm-event.socket                             dm-event.service
+/run/dmeventd-server                       dm-event.socket                             dm-event.service
+/run/ssh-unix-local/socket                 sshd-unix-local.socket                      -
+/run/systemd/coredump                      systemd-coredump.socket                     -
+/run/systemd/io.systemd.BootControl        systemd-bootctl.socket                      -
+/run/systemd/io.systemd.Credentials        systemd-creds.socket                        -
+/run/systemd/io.systemd.Hostname           systemd-hostnamed.socket                    systemd-hostnamed.service
+/run/systemd/io.systemd.Import             systemd-importd.socket                      systemd-importd.service
+/run/systemd/io.systemd.PCRExtend          systemd-pcrextend.socket                    -
+/run/systemd/io.systemd.PCRLock            systemd-pcrlock.socket                      -
+/run/systemd/io.systemd.sysext             systemd-sysext.socket                       -
+/run/systemd/journal/dev-log               systemd-journald-dev-log.socket             systemd-journald.service
+/run/systemd/journal/socket                systemd-journald.socket                     systemd-journald.service
+/run/systemd/journal/stdout                systemd-journald.socket                     systemd-journald.service
+/run/systemd/journal/syslog                syslog.socket                               syslog.service
+/run/systemd/oom/io.systemd.ManagedOOM     systemd-oomd.socket                         systemd-oomd.service
+/run/systemd/userdb/io.systemd.Multiplexer systemd-userdbd.socket                      systemd-userdbd.service
+/run/udev/control                          systemd-udevd-control.socket                systemd-udevd.service
+
+29 sockets listed.

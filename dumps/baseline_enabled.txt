@@ -1,0 +1,17 @@
+UNIT FILE                            STATE   PRESET
+firewalld.service                    enabled disabled
+gdm.service                          enabled disabled
+getty@.service                       enabled enabled
+iwd.service                          enabled disabled
+nginx.service                        enabled disabled
+systemd-network-generator.service    enabled enabled
+systemd-networkd-wait-online.service enabled enabled
+systemd-networkd.service             enabled enabled
+systemd-resolved.service             enabled enabled
+systemd-timesyncd.service            enabled enabled
+systemd-networkd.socket              enabled disabled
+systemd-userdbd.socket               enabled enabled
+remote-fs.target                     enabled enabled
+fstrim.timer                         enabled disabled
+
+14 unit files listed.
