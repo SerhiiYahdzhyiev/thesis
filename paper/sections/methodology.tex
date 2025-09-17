@@ -161,8 +161,8 @@ key advantages:
 
 \begin{itemize}
     \item \textbf{In-code integration:} \gls{EMA} allows precise measurement of
-          energy consumption for specific regions of application code,
-          enabling multiple benchmarks to be integrated within a single code base.
+          energy consumption for specific regions (\cref{fig:ema_region}) of application
+          code, enabling multiple benchmarks to be integrated within a single code base.
     \item \textbf{Plugin-based extensibility:} The framework supports multiple
           hardware measurement back-ends (e.g., \gls{RAPL}, Ryzen-specific sensors)
           concurrently through a uniform public interface, without modifying
@@ -198,6 +198,13 @@ high-level and low-level \gls{API}s:
         management, region life-cycles, and data output.
 \end{itemize}
 \parencite{NAAICE}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\textwidth]{assets/ema_region}
+    \caption{Overview of \gls{EMA}'s Region API.}
+    \label{fig:ema_region}
+\end{figure}
 
 These design choices make \gls{EMA} well-suited for integrating energy
 measurements into experimental workloads and benchmarks, supporting
