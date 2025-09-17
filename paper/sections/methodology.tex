@@ -175,16 +175,12 @@ key advantages:
           and future tool improvements.
 \end{itemize}
 
-
-- add Diagram and/or listing showing how the Regions API usage looks like
-
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.7\textwidth]{assets/ema_rapl_overflow}
     \caption{Simplified illustration of overflow handling for \gls{EMA}'s \gls{RAPL} Plugin.}
     \label{fig:ema_rapl_overflow}
 \end{figure}
-
 
 \gls{EMA}'s architecture is structured into layers, as illustrated in
 \cref{fig:ema_arch}. The core of the framework is the \emph{Plugin} system,
@@ -241,8 +237,9 @@ using a zero-order hold (rectangular) rule:
 \[
   E(t_k) = E(t_{k-1}) + P(t_{k-1}) \cdot \Delta t,
 \]
-with \(\Delta t = t_k - t_{k-1}\). In SI units this yields energy in
-joules since \(P\,[\mathrm{W}]\cdot\Delta t\,[\mathrm{s}] = E\,[\mathrm{J}]\).
+with \(\Delta t = t_k - t_{k-1}\)(\cref{lst:energy_uj}). In SI units this
+yields energy in joules since
+\(P\,[\mathrm{W}]\cdot\Delta t\,[\mathrm{s}] = E\,[\mathrm{J}]\).
 In the implementation internal counters is kept in micro-joules; hence,
 when \(\Delta t\) is computed in microseconds the update reduces to:
 \[
@@ -251,19 +248,85 @@ when \(\Delta t\) is computed in microseconds the update reduces to:
 The plugin stores a per-device time-stamp to compute \(\Delta t\) and
 exposes the accumulated micro-joules to the \gls{EMA}'s API.
 
+\begin{samepage}
+\begin{lstlisting}[
+    language=c,
+    caption={Energy accumulation in Ryzen Plugin},
+    label={lst:energy_uj},
+    aboveskip=1.5\baselineskip,
+    float
+]
+unsigned long long energy_uj = (unsigned long long)(power * delta_us);
+d_data->energy_uj += energy_uj;
+\end{lstlisting}
+\end{samepage}
+
 \paragraph{Practical considerations:}
 \begin{itemize}
   \item The integration method above corresponds to a rectangular
-    approximation (zero-order hold). It is simple and deterministic,
-    but it can miss short high-power spikes if the sampling cadence is
-    too low; this limitation is discussed above in the thesis.
+    approximation (\cref{list:energy_uj}) (zero-order hold). It is simple and
+    deterministic, but it can miss short high-power spikes if the sampling
+    cadence is too low; this limitation is discussed above in the thesis.
   \item The plugin uses dynamic mapping from platform codename to \gls{SMN}
     offsets (table of known addresses), enabling reuse across several
     Ryzen codename variants.
   \item For \gls{RAPL}/\gls{MSR} measurements \gls{EMA}'s overflow handling utilities
     are applied to handle counter wraparound; for plugin readings thou the handling
-    behavior is disabled due to lack of required values for polling rate calculation.
+    behavior is disabled due to lack of required values for polling rate calculation
+    (see \cref{lst:overflow}).
 \end{itemize}
+
+\begin{samepage}
+\begin{lstlisting}[
+    language=c,
+    caption={Overflow handling example from \gls{EMA} source code.},
+    label={lst:overflow},
+    aboveskip=1.5\baselineskip,
+    float
+]
+static
+void* track_overflows(void* args)
+{
+    DevicePtrArray* dev_ptrs = args;
+
+    uint64_t min_interval = UINT64_MAX;
+    for(int i = 0; i < dev_ptrs->size; i++)
+    {
+        Device* device = dev_ptrs->array[i];
+        uint64_t interval =
+            device->plugin->cbs.get_energy_update_interval(device);
+
+        if( interval > 0 && interval < min_interval )
+                min_interval = interval;
+    }
+
+    while( 1 )
+    {
+        for(int i = 0; i < dev_ptrs->size; i++)
+        {
+            Device* device = dev_ptrs->array[i];
+            uint64_t interval =
+                device->plugin->cbs.get_energy_update_interval(device);
+
+            if( interval == 0 )
+                continue;
+
+            unsigned long long cur_e;
+            OverflowData* ofd = &device->overflow;
+
+            /* Thread safe! Only single writer, no readers allowed. */
+            pthread_mutex_lock(&ofd->mutex);
+            cur_e = device->plugin->cbs.get_energy_uj(device);
+            if( device->overflow.old > cur_e )
+                ofd->count++;
+            ofd->old = cur_e;
+            pthread_mutex_unlock(&ofd->mutex);
+        }
+        usleep((uint64_t) min_interval * 1000);
+    }
+}
+\end{lstlisting}
+\end{samepage}
 
 On finalization the plugin releases the \texttt{libsmu} context and
 frees all per-device structures registered with \gls{EMA}.
@@ -318,8 +381,14 @@ runtime configuration. The corresponding dump files and the shell script
 (\cref{lst:dump}) used to generate them are included in the project repository
 \footcite{yahdzhyiev2025repo} for full reproducibility.
 
-\begin{lstlisting}[language=bash,caption={Script for systemd state dump},
-label={lst:dump}]
+\begin{samepage}
+\begin{lstlisting}[
+    language=bash,
+    caption={Script for systemd state dump},
+    label={lst:dump},
+    aboveskip=1.5\baselineskip,
+    float
+]
 #!/bin/bash
 
 set -e
@@ -332,6 +401,7 @@ systemctl list-timers --all > baseline_timers.txt
 
 ps -eo pid,ppid,cmd,%cpu --sort=%cpu > baseline-ps.txt
 \end{lstlisting}
+\end{samepage}
 
 Raw energy-measurement outputs were subsequently processed using a set of custom
 Python scripts. These scripts perform data filtering and validation,
