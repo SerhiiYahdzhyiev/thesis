@@ -148,6 +148,13 @@ predominantly) in the absence of official vendor support.
 
 \subsection{Energy Measurement Framework}
 
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\textwidth]{assets/ema_arch}
+    \caption{High-level architecture of \gls{EMA}.}
+    \label{fig:ema_arch}
+\end{figure}
+
 For this study, the \gls{EMA} framework was selected as the primary tool
 for collecting energy consumption data. The choice was motivated by several
 key advantages:
@@ -161,27 +168,21 @@ key advantages:
           concurrently through a uniform public interface, without modifying
           the application source.
       \item \textbf{Reliability:} \gls{EMA} handles common measurement pitfalls,
-          such as counter overflows in \gls{MSR}s, ensuring accurate and
-          consistent data.
+          such as counter overflows (\cref{fig:ema_rapl_overflow}) in \gls{MSR}s,
+          ensuring accurate and consistent data.
     \item \textbf{Familiarity and openness:} Authors have prior experience with
           \gls{EMA} and contributed to its development, facilitating integration
           and future tool improvements.
 \end{itemize}
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.7\textwidth]{assets/ema_arch}
-    \caption{High-level architecture of \gls{EMA}.}
-    \label{fig:ema_arch}
-\end{figure}
 
 - add Diagram and/or listing showing how the Regions API usage looks like
 
-\begin{figure}[h]
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=0.7\textwidth]{assets/ema_rapl_overflow}
     \caption{Simplified illustration of overflow handling for \gls{EMA}'s \gls{RAPL} Plugin.}
-    \label{fig:ema_arch}
+    \label{fig:ema_rapl_overflow}
 \end{figure}
 
 
@@ -214,7 +215,7 @@ The plugin uses the \texttt{libsmu} \footcite{RyzenSMU_GitHub} user-space
 library to access the \gls{CPU}'s \gls{SMU} telemetry (\gls{PM} Table) and
 selected \gls{SMN} registers. Readouts obtained
 from the \gls{SMU} are exposed to \gls{EMA} as standard \texttt{Device} objects and
-thereby integrate with EMA's region-based measurement model.
+thereby integrate with \gls{EMA}'s region-based measurement model.
 
 During initialization the plugin queries the \gls{SMU} (via \texttt{libsmu})
 to determine the platform codename and available telemetry fields. For
@@ -304,11 +305,11 @@ To approximate the conditions of a \gls{HPC} cluster node, the target system
 was placed in a minimal operating state during all measurement runs.
 Non-essential services such as the graphical desktop environment, audio stack,
 Bluetooth, and other user-oriented daemons were manually disabled.
-Complete \texttt{systemd} service and process state dumps were recorded
-before main experiment run to document the exact runtime configuration. The
-corresponding dump files and the shell script (\cref{lst:dump}) used to generate
-them are included in the project repository \footcite{yahdzhyiev2025repo}
-for full reproducibility.
+Complete \texttt{systemd} service and process state dumps (one example available in
+\cref{app:swspec}) were recorded before main experiment run to document the exact
+runtime configuration. The corresponding dump files and the shell script
+(\cref{lst:dump}) used to generate them are included in the project repository
+\footcite{yahdzhyiev2025repo} for full reproducibility.
 
 \begin{lstlisting}[language=bash,caption={Script for systemd state dump},
 label={lst:dump}]
