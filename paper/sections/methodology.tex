@@ -177,7 +177,13 @@ key advantages:
 
 - add Diagram and/or listing showing how the Regions API usage looks like
 
-- add Diagram on overflow handing in RAPL (as example given)
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth]{assets/ema_rapl_overflow}
+    \caption{Simplified illustration of overflow handling for \gls{EMA}'s \gls{RAPL} Plugin.}
+    \label{fig:ema_arch}
+\end{figure}
+
 
 \gls{EMA}'s architecture is structured into layers, as illustrated in
 \cref{fig:ema_arch}. The core of the framework is the \emph{Plugin} system,
