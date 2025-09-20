@@ -25,10 +25,14 @@ def filter_data(rows: list[dict]):
 def get_plugin_type(row: dict):
     return "RAPL" if "CPU" in row['device_name'] else "RYZEN"
 
+def get_domain(row: dict):
+    return "package" if "package" in row['device_name'] else "core"
+
 def process_data(rows: list[dict], runid: int):
     return [
         {
             'plugin': get_plugin_type(r),
+            'domain': get_domain(r),
             'region': r['region_idf'],
             'energy_uj': int(r['energy']),
             'time_us': int(r['time']),
