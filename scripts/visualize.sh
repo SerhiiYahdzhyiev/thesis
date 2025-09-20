@@ -3,6 +3,7 @@
 import csv
 import matplotlib.pyplot as plt
 from matplotlib.ticker import ScalarFormatter
+import numpy as np
 import os
 from pathlib import Path
 
@@ -13,10 +14,10 @@ def read_csv(path: Path):
         return list(dict_reader)
 
 def plot_ax(ax, data, metric, name, plugin):
-    x = [d['runid'] for d in data]
+    x = np.arange(len({d['runid'] for d in data}))
     y = [int(d[metric]) for d in data]
 
-    ax.bar(x,y, width=0.8)
+    ax.bar(x, y, width=0.6)
     ax.set_ylabel(metric)
     ax.yaxis.set_major_formatter(ScalarFormatter(useMathText=True))
     ax.ticklabel_format(axis='y', style='sci', scilimits=(0,0))
@@ -24,7 +25,8 @@ def plot_ax(ax, data, metric, name, plugin):
     ax.set_title(name + plugin)
 
 def plot_region(axs, i: int, name: str, data: list[dict], metric: str):
-    fig, axs2 = plt.subplots(1, 2, figsize=(15, 5))
+    fig, ax = plt.subplots()
+    domain = next(d['domain'] for d in data)
     sorted_data = sorted(data, key=lambda i: i['runid'])
     region_data = [d for d in sorted_data if d['region'] == name]
 
@@ -34,10 +36,22 @@ def plot_region(axs, i: int, name: str, data: list[dict], metric: str):
     plot_ax(axs[i][0], smu, metric, name, '_ryzen_smu')
     plot_ax(axs[i][1], rapl, metric, name, '_rapl')
 
-    plot_ax(axs2[0], smu, metric, name, '_ryzen_smu')
-    plot_ax(axs2[1], rapl, metric, name, '_rapl')
+    x = np.arange(len({d['runid'] for d in data}))
+    y_smu = [int(d[metric]) for d in smu]
+    y_rapl = [int(d[metric]) for d in rapl]
 
-    out_path = Path("./plots/") / f"{name}_{metric}"
+    width = 0.4
+    ax.bar(x + width/2, y_smu, width, label='RYZEN')
+    ax.bar(x - width/2, y_rapl, width, label='RAPL')
+    ax.set_ylabel(metric)
+    ax.yaxis.set_major_formatter(ScalarFormatter(useMathText=True))
+    ax.ticklabel_format(axis='y', style='sci', scilimits=(0,0))
+    ax.set_xlabel('Runs')
+    ax.set_title(name + '_')
+    ax.set_yscale('log')
+    ax.legend()
+
+    out_path = Path("./plots/") / f"{name}_{metric}_{domain}"
     out_path.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig('plots/' + out_path.name)
 
@@ -65,14 +79,17 @@ def main():
     fig, axs = plt.subplots(5, 2, figsize=(15, 25))
     fig2, axs2 = plt.subplots(5, 2, figsize=(15, 25))
 
+    core = [d for d in data if d['domain'] == 'core']
+    package = [d for d in data if d['domain'] == 'package']
+
     i = 0
     for r in regions:
-        plot_region(axs, i, r, data, 'energy_uj')
-        plot_region(axs2, i, r, data, 'time_us')
+        plot_region(axs, i, r, core, 'energy_uj')
+        plot_region(axs2, i, r, package, 'energy_uj')
         i = i + 1
 
-    out_path = Path("./plots/") / "regions_energy"
-    out_path2 = Path("./plots/") / "regions_time"
+    out_path = Path("./plots/") / "regions_energy_core"
+    out_path2 = Path("./plots/") / "regions_energy_package"
     out_path.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(out_path)
     fig2.savefig(out_path2)
