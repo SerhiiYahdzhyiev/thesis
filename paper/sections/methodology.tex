@@ -31,6 +31,8 @@ To test the above this work employs next:
 
 \subsection{Test System Setup}
 
+\subsubsection{Hardware}
+
 All experimental data in this study was collected on a system equipped with an
 AMD Ryzen 5 3600 processor, featuring six physical cores and twelve hardware
 threads. The processor operated on a Gigabyte A320M-H-CF mainboard, running
@@ -41,7 +43,7 @@ test environment are provided in \cref{app:hwspec}. This includes detailed
 \gls{CPU}, memory, storage, \gls{GPU}, and firmware information, as well as
 the software stack and driver versions used during the experiments.
 
-\subsection{Software Environment}
+\subsubsection{Software Environment}
 
 The experiments were conducted on an up-to-date Arch Linux (rolling release)
 installation with Linux kernel version 6.16.4-arch1-1.
@@ -281,63 +283,11 @@ d_data->energy_uj += energy_uj;
   \item The plugin uses dynamic mapping from platform codename to \gls{SMN}
     offsets (table of known addresses), enabling reuse across several
     Ryzen codename variants.
-  \item For \gls{RAPL}/\gls{MSR} measurements \gls{EMA}'s overflow handling utilities
-    are applied to handle counter wraparound; for plugin readings thou the handling
-    behavior is disabled due to lack of required values for polling rate calculation
-    (see \cref{lst:overflow}).
+  \item For \gls{RAPL}/\gls{MSR} measurements \gls{EMA}'s overflow handling
+    utilities are applied to handle counter wraparound; for plugin readings 
+    thou the handling behavior is disabled due to lack of required values
+    for polling rate calculation.
 \end{itemize}
-
-\begin{samepage}
-\begin{lstlisting}[
-    language=c,
-    caption={Overflow handling example from \gls{EMA} source code.},
-    label={lst:overflow},
-    aboveskip=1.5\baselineskip,
-    float
-]
-static
-void* track_overflows(void* args)
-{
-    DevicePtrArray* dev_ptrs = args;
-
-    uint64_t min_interval = UINT64_MAX;
-    for(int i = 0; i < dev_ptrs->size; i++)
-    {
-        Device* device = dev_ptrs->array[i];
-        uint64_t interval =
-            device->plugin->cbs.get_energy_update_interval(device);
-
-        if( interval > 0 && interval < min_interval )
-                min_interval = interval;
-    }
-
-    while( 1 )
-    {
-        for(int i = 0; i < dev_ptrs->size; i++)
-        {
-            Device* device = dev_ptrs->array[i];
-            uint64_t interval =
-                device->plugin->cbs.get_energy_update_interval(device);
-
-            if( interval == 0 )
-                continue;
-
-            unsigned long long cur_e;
-            OverflowData* ofd = &device->overflow;
-
-            /* Thread safe! Only single writer, no readers allowed. */
-            pthread_mutex_lock(&ofd->mutex);
-            cur_e = device->plugin->cbs.get_energy_uj(device);
-            if( device->overflow.old > cur_e )
-                ofd->count++;
-            ofd->old = cur_e;
-            pthread_mutex_unlock(&ofd->mutex);
-        }
-        usleep((uint64_t) min_interval * 1000);
-    }
-}
-\end{lstlisting}
-\end{samepage}
 
 On finalization the plugin releases the \texttt{libsmu} context and
 frees all per-device structures registered with \gls{EMA}.
