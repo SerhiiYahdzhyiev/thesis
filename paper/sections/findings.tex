@@ -2,13 +2,14 @@
 
 \subsection{Sampling/polling Rate Experiments}
 
-Despite the statement in \textcite{ryzen_managment_linux} that \texttt{ryzen\_smu}
-driver intentionally limits the refresh rate to approximately 1 milli-second
-small practical tests/experiments with \texttt{monitor}
-(see \footcite{yahdzhyiev2025repo} \path{code/src/monitor.c}) and \texttt{profile}
-(see \footcite{yahdzhyiev2025repo} \path{code/src/profile.c}) showed the
-possibility of obtaining distinct energy readings from \gls{PM} Table on much
-higher rates (approx. 1 micro-second) (as also mentioned in \cref{sec:limncons}).
+Despite the statement in \textcite{ryzen_managment_linux} that
+\texttt{ryzen\_smu} driver intentionally limits the refresh rate to
+approximately 1 millisecond small practical tests/experiments with
+\texttt{monitor} (see \footcite{yahdzhyiev2025repo} \path{code/src/monitor.c})
+and \texttt{profile} (see \footcite{yahdzhyiev2025repo} \path{code/src/profile.c})
+showed the possibility of obtaining distinct energy readings from
+\gls{PM} Table on much higher rates (approx. 1 micro-second)
+(as also mentioned in \cref{sec:limncons}).
 
 The outputs of \texttt{sudo ./profile} with polling/sampling rate set to
 1 micro-second can be inspected in \cref{app:outputs}.
@@ -33,9 +34,10 @@ see \cref{app:hwspec}), additionally the source does not specify which \gls{BIOS
 version was used to test/obtain basis for the statements provided.
 
 The mentioned small tests/experiment can be used as a basis for a separate
-research with extended methodology that should include external power measurement
-devices as the source of truth to evaluate the reliability of the readings
+research with extended methodology that should include external \gls{PMD}
+as the source of truth to evaluate the reliability of the readings
 obtained at increased sampling rates. They also can be a part of the
-basis for extensions and improvements of the methodology used for this research.
+basis for extensions and improvements of the methodology used for this
+research.
 
 - Provide Data Vusializations + Commentary

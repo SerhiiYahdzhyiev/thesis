@@ -2,30 +2,32 @@
 
 \subsection{Research Hypothesis}
 
-The central hypothesis of this study is formulated as follows:
+For this study the main hypotheses were formulated as follows:
 
-\begin{equation*}
-H_{0}:
+\begin{align*}
+H_{0}&: 
 \begin{minipage}[t]{0.8\linewidth}
-\gls{SMU} (PM-table) and \gls{RAPL} measurements for the \emph{package} and
-\emph{core} domains follow similar temporal trends and exhibit a high degree
-of dynamic correlation.
+There is no statistically significant dynamic relationship between
+\gls{SMU} (PM-table) and \gls{RAPL} measurements for the
+selected power domains; any observed similarity
+is due to random variation.
+\end{minipage}\\[0.8em]
+H_{1}&:
+\begin{minipage}[t]{0.8\linewidth}
+\gls{SMU} (PM-table) and \gls{RAPL} measurements for the same domains
+exhibit significant temporal correlation and similar trends.
 \end{minipage}
-\end{equation*}
+\end{align*}
 
-To evaluate the above the study focuses on complementary analyses:
+To test the above this work employs next:
 \begin{itemize}
-  \item Pearson correlation and cross-correlation to quantify overall dynamic
-        similarity and detect potential time lags,
-  \item visual inspection of synchronized traces to compare short-term
-        fluctuations and long-term trends,
-  \item Bland–Altman plots and basic error metrics (e.g., \gls{RMSE}, \gls{MAE})
-        to describe the spread of differences and practical agreement.
+  \item Pearson correlation and cross-correlation test to assess dynamic
+        similarity and possible time lags.
+  \item Visual inspection of primary data plots to compare long-term trends
+        and identify anomalies, short-term fluctuations and/or outliers.
+  \item Bland–Altman plots and error metrics to describe the spread of
+        differences and practical agreement.
 \end{itemize}
-
-This combination highlights temporal coherence and captures the general
-agreement of the two data sources without requiring an external ground-truth
-measurement.
 
 \subsection{Test System Setup}
 
@@ -120,18 +122,34 @@ often the counters are read, their effective resolution is limited to about
 risk of side-channel attacks exploiting high-resolution power traces
 \parencite{IntelRAPL, PwrLeak_2023}.
 
-In contrast, preliminary experiments with the Ryzen \gls{SMU} driver suggest
-substantially higher sampling capabilities. Power values from the \gls{PM} table
-can be polled at microsecond-scale intervals without immediately saturating,
-thus offering the potential for higher temporal resolution than \gls{RAPL}.
-While this feature was not systematically explored in the present study, it
-indicates a promising direction for future research. A minimal reference
-implementation used for polling-rate validation is available in the
-supplementary repository \parencite{yahdzhyiev2025repo}.
+The statement in \textcite{ryzen_management_linux} also describes similar
+limitation (approximately 1 millisecond) for the refresh rate of the 
+\texttt{ryzen\_smu} driver. However, preliminary experiments with the
+driver suggest substantially higher sampling capabilities (potential for
+higher temporal resolution than \gls{RAPL}.
 
-Second, it must be emphasized that the Ryzen \gls{SMU} driver employed in this
-work is not an official AMD release. Its functionality is largely the result
-of community-driven reverse engineering efforts
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\textwidth]{assets/sampling_spike}
+    \caption{
+        Illustration of potential accuracy degradation connected
+        to the limited power readings sampling/refresh rate.
+    }
+    \label{fig:sampling}
+\end{figure}
+
+\cref{fig:sampling} aims to illustrate potential issues related to the
+power reading refresh/sampling rate limitations. As can be seen the potential
+short spike of power consumption between two sampling points will lead to
+precision loss.
+
+While this feature was not systematically explored in the present study, it
+indicates a promising direction for future research. This topic will be
+mentioned in later sections.
+
+Second, it must be emphasized that the \texttt{ryzen\_smu} driver employed in
+this work is not an official AMD release. Its functionality is largely the
+result of community-driven reverse engineering efforts
 \footcite{RyzenMonitor_GitHub,ryzen_managment_linux}. Consequently, exact
 semantics of some registers and tables remain partially undocumented, which may
 introduce uncertainties in the interpretation of results. Nevertheless, such
@@ -257,7 +275,7 @@ d_data->energy_uj += energy_uj;
 \paragraph{Practical considerations:}
 \begin{itemize}
   \item The integration method above corresponds to a rectangular
-    approximation (\cref{list:energy_uj}) (zero-order hold). It is simple and
+    approximation (\cref{lst:energy_uj}) (zero-order hold). It is simple and
     deterministic, but it can miss short high-power spikes if the sampling
     cadence is too low; this limitation is discussed above in the thesis.
   \item The plugin uses dynamic mapping from platform codename to \gls{SMN}
@@ -324,7 +342,7 @@ void* track_overflows(void* args)
 On finalization the plugin releases the \texttt{libsmu} context and
 frees all per-device structures registered with \gls{EMA}.
 
-This concise design allows simultaneous collection of Ryzen \gls{SMU} and
+This concise design allows simultaneous collection of \texttt{ryzen\_smu} and
 \gls{RAPL} data within the same experimental run, which is required for the
 comparative analysis described in this study.
 
