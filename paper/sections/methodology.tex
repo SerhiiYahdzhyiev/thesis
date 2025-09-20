@@ -4,35 +4,28 @@
 
 The central hypothesis of this study is formulated as follows:
 
-- Refine the following (simplify if possible)
 \begin{equation*}
 H_{0}:
 \begin{minipage}[t]{0.8\linewidth}
 \gls{SMU} (PM-table) and \gls{RAPL} measurements for the \emph{package} and
-\emph{core} domains do not exhibit systematic differences and demonstrate a
-high degree of dynamic correlation.
+\emph{core} domains follow similar temporal trends and exhibit a high degree
+of dynamic correlation.
 \end{minipage}
 \end{equation*}
 
-To evaluate this hypothesis following complementary statistical methods were
-applied:
-
-- Rewrite this (simplify the statistics)
+To evaluate the above the study focuses on complementary analyses:
 \begin{itemize}
-    \item the Wilcoxon signed-rank test to detect potential systematic bias,
-    \item Pearson's correlation coefficient and cross-correlation analysis
-        to assess the strength of the dynamic relationship and to identify
-        possible time lags,
-    \item Bland–Altman analysis, complemented by numerical error metrics
-        such as \gls{RMSE}, \gls{MAE}, and \gls{MAPE}, to quantify dispersion
-        and define limits of agreement.
+  \item Pearson correlation and cross-correlation to quantify overall dynamic
+        similarity and detect potential time lags,
+  \item visual inspection of synchronized traces to compare short-term
+        fluctuations and long-term trends,
+  \item Bland–Altman plots and basic error metrics (e.g., \gls{RMSE}, \gls{MAE})
+        to describe the spread of differences and practical agreement.
 \end{itemize}
 
-This combination of tests was selected to capture different aspects of agreement
-between the two measurement sources: Wilcoxon provides sensitivity to systematic
-shifts in central tendency, correlation and cross-correlation focus on temporal
-coherence and dynamic similarity, while Bland–Altman and error metrics assess
-the absolute level of agreement and practical interchangeability.
+This combination highlights temporal coherence and captures the general
+agreement of the two data sources without requiring an external ground-truth
+measurement.
 
 \subsection{Test System Setup}
 
@@ -107,7 +100,7 @@ The combined use of above-mentioned sources contributes to several points of thi
 work:
 
 \begin{itemize}
-    \item Correct identification of measurement domains.
+    \item Correct identification of measurement power domains.
     \item Reproducible platform configuration.
     \item Selection of implementation approaches for the \gls{SMU}-to-energy
         conversion.
@@ -133,8 +126,8 @@ can be polled at microsecond-scale intervals without immediately saturating,
 thus offering the potential for higher temporal resolution than \gls{RAPL}.
 While this feature was not systematically explored in the present study, it
 indicates a promising direction for future research. A minimal reference
-implementation used for polling-rate validation is available in the supplementary
-repository \parencite{yahdzhyiev2025repo}.
+implementation used for polling-rate validation is available in the
+supplementary repository \parencite{yahdzhyiev2025repo}.
 
 Second, it must be emphasized that the Ryzen \gls{SMU} driver employed in this
 work is not an official AMD release. Its functionality is largely the result
@@ -343,7 +336,6 @@ implemented \footcite{yahdzhyiev2025repo} (see source in
 to define multiple \emph{Measurement Regions} that emulate distinct workload
 patterns:
 
-
 \begin{itemize}
   \item A short steady high computational load region.
   \item A short idle load region (sleep).
@@ -353,7 +345,9 @@ patterns:
   \item A long region with burst (spiked) computational load.
 \end{itemize}
 
-- Mention Cooldown Regions
+Between running each region a cooldown \texttt{sleep} call is made with
+defined \texttt{COOLDOWN} time in seconds. For the main experiment run this
+value was set to 5 seconds.
 
 During each run the script \lstinline|run_measurements.sh|
 (\cref{lst:run-measurements}) automates repeated executions and

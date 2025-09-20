@@ -89,19 +89,13 @@ yet its practical benefits over \gls{RAPL} remain largely unexplored.
 
 \subsection{Research Questions}
 
-- add consideration description
-
-  - focus on software measurements
-
-  - does not use externam PMD
-
 Considering the above following research questions were formulated:
 
 \begin{enumerate}
   \item To what extent do energy measurements obtained from the
         \gls{SMU} (\gls{PM} Table) and \gls{RAPL} interfaces for the
-        \emph{package} and \emph{core} domains agree in terms of accuracy and
-        the absence of systematic bias?
+        \emph{package} and \emph{core} power domains show similar
+        dynamic and temporal trends?
       \item What is the magnitude of errors (\gls{RMSE}, \gls{MAE}, \gls{MAPE}),
         and to what degree are the two interfaces theoretically interchangeable
         in practical energy measurement tasks?
@@ -109,3 +103,16 @@ Considering the above following research questions were formulated:
         \gls{RAPL} and \gls{SMU} affect the temporal resolution of measurements,
         and what are the implications for future high-frequency energy profiling?
 \end{enumerate}
+
+\subsubsection{Considerations}
+
+Due to the time and resource limitations this study focuses primarily on the
+energy measurements on \emph{Software Level}. That means that no objective
+\emph{source of truth} (e.g. external \emph{Power Measurement Device}
+attached to the \gls{PC}'s \gls{PSU}) was used.
+
+Both interfaces research in this work provide power/energy estimations based
+on some internal mechanisms based on combination of hardware counters and
+mathematical estimation models. Which in turn means that the energy and/or
+power values obtained through those mechanisms do not reflect the 100\%
+accurate real/physical consumption.
