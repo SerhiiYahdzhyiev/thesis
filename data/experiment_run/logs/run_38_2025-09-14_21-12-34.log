@@ -1,0 +1,92 @@
+[RUN 38/100] Sun Sep 14 09:12:34 PM CEST 2025
+stress-ng: info:  [24176] setting to a 10 secs run per stressor
+stress-ng: info:  [24176] dispatching hogs: 12 cpu
+stress-ng: info:  [24176] skipped: 0
+stress-ng: info:  [24176] passed: 12: cpu (12)
+stress-ng: info:  [24176] failed: 0
+stress-ng: info:  [24176] metrics untrustworthy: 0
+stress-ng: info:  [24176] successful run completed in 10.01 secs
+stress-ng: info:  [24196] setting to a 1 min run per stressor
+stress-ng: info:  [24196] dispatching hogs: 12 cpu
+stress-ng: info:  [24196] skipped: 0
+stress-ng: info:  [24196] passed: 12: cpu (12)
+stress-ng: info:  [24196] failed: 0
+stress-ng: info:  [24196] metrics untrustworthy: 0
+stress-ng: info:  [24196] successful run completed in 1 min
+stress-ng: info:  [24263] setting to a 1 sec run per stressor
+stress-ng: info:  [24263] dispatching hogs: 12 cpu
+stress-ng: info:  [24263] skipped: 0
+stress-ng: info:  [24263] passed: 12: cpu (12)
+stress-ng: info:  [24263] failed: 0
+stress-ng: info:  [24263] metrics untrustworthy: 0
+stress-ng: info:  [24263] successful run completed in 1.01 sec
+stress-ng: info:  [24277] setting to a 1 sec run per stressor
+stress-ng: info:  [24277] dispatching hogs: 12 cpu
+stress-ng: info:  [24277] skipped: 0
+stress-ng: info:  [24277] passed: 12: cpu (12)
+stress-ng: info:  [24277] failed: 0
+stress-ng: info:  [24277] metrics untrustworthy: 0
+stress-ng: info:  [24277] successful run completed in 1.01 sec
+stress-ng: info:  [24291] setting to a 1 sec run per stressor
+stress-ng: info:  [24291] dispatching hogs: 12 cpu
+stress-ng: info:  [24291] skipped: 0
+stress-ng: info:  [24291] passed: 12: cpu (12)
+stress-ng: info:  [24291] failed: 0
+stress-ng: info:  [24291] metrics untrustworthy: 0
+stress-ng: info:  [24291] successful run completed in 1.01 sec
+stress-ng: info:  [24306] setting to a 1 sec run per stressor
+stress-ng: info:  [24306] dispatching hogs: 12 cpu
+stress-ng: info:  [24306] skipped: 0
+stress-ng: info:  [24306] passed: 12: cpu (12)
+stress-ng: info:  [24306] failed: 0
+stress-ng: info:  [24306] metrics untrustworthy: 0
+stress-ng: info:  [24306] successful run completed in 1.01 sec
+stress-ng: info:  [24320] setting to a 1 sec run per stressor
+stress-ng: info:  [24320] dispatching hogs: 12 cpu
+stress-ng: info:  [24320] skipped: 0
+stress-ng: info:  [24320] passed: 12: cpu (12)
+stress-ng: info:  [24320] failed: 0
+stress-ng: info:  [24320] metrics untrustworthy: 0
+stress-ng: info:  [24320] successful run completed in 1.01 sec
+stress-ng: info:  [24334] setting to a 5 secs run per stressor
+stress-ng: info:  [24334] dispatching hogs: 12 cpu
+stress-ng: info:  [24334] skipped: 0
+stress-ng: info:  [24334] passed: 12: cpu (12)
+stress-ng: info:  [24334] failed: 0
+stress-ng: info:  [24334] metrics untrustworthy: 0
+stress-ng: info:  [24334] successful run completed in 5.01 secs
+stress-ng: info:  [24348] setting to a 5 secs run per stressor
+stress-ng: info:  [24348] dispatching hogs: 12 cpu
+stress-ng: info:  [24348] skipped: 0
+stress-ng: info:  [24348] passed: 12: cpu (12)
+stress-ng: info:  [24348] failed: 0
+stress-ng: info:  [24348] metrics untrustworthy: 0
+stress-ng: info:  [24348] successful run completed in 5.00 secs
+stress-ng: info:  [24362] setting to a 5 secs run per stressor
+stress-ng: info:  [24362] dispatching hogs: 12 cpu
+stress-ng: info:  [24362] skipped: 0
+stress-ng: info:  [24362] passed: 12: cpu (12)
+stress-ng: info:  [24362] failed: 0
+stress-ng: info:  [24362] metrics untrustworthy: 0
+stress-ng: info:  [24362] successful run completed in 5.01 secs
+stress-ng: info:  [24377] setting to a 5 secs run per stressor
+stress-ng: info:  [24377] dispatching hogs: 12 cpu
+stress-ng: info:  [24377] skipped: 0
+stress-ng: info:  [24377] passed: 12: cpu (12)
+stress-ng: info:  [24377] failed: 0
+stress-ng: info:  [24377] metrics untrustworthy: 0
+stress-ng: info:  [24377] successful run completed in 5.00 secs
+stress-ng: info:  [24396] setting to a 5 secs run per stressor
+stress-ng: info:  [24396] dispatching hogs: 12 cpu
+stress-ng: info:  [24396] skipped: 0
+stress-ng: info:  [24396] passed: 12: cpu (12)
+stress-ng: info:  [24396] failed: 0
+stress-ng: info:  [24396] metrics untrustworthy: 0
+stress-ng: info:  [24396] successful run completed in 5.01 secs
+stress-ng: info:  [24413] setting to a 5 secs run per stressor
+stress-ng: info:  [24413] dispatching hogs: 12 cpu
+stress-ng: info:  [24413] skipped: 0
+stress-ng: info:  [24413] passed: 12: cpu (12)
+stress-ng: info:  [24413] failed: 0
+stress-ng: info:  [24413] metrics untrustworthy: 0
+stress-ng: info:  [24413] successful run completed in 5.01 secs

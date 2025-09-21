@@ -1,0 +1,123 @@
+\section{Test/Experiment System Setup Details}
+\label{app:setup}
+
+This appendix provides detailed information about the hardware and software
+configuration of the test system used in this study, as well as relevant runtime
+settings. The goal is to ensure reproducibility of the presented measurements.
+The information is gathered using \texttt{lscpu}, \texttt{dmidecode},
+\texttt{lsblk}, and \texttt{lspci}.
+
+\subsection{Hardware Specifications}
+\label{app:hwspec}
+
+\subsubsection*{CPU}
+\begin{tabularx}{\linewidth}{>{\hsize=0.3\hsize}X >{\hsize=0.7\hsize}X}
+\toprule
+\textbf{Component} & \textbf{Details} \\
+\midrule
+Model & AMD Ryzen 5 3600 (6-Core Processor) \\
+Architecture & x86\_64 (64-bit, little endian) \\
+Cores / Threads & 6 cores / 12 threads \\
+Base / Boost Frequency & 2.2 GHz (min) -- 4.2 GHz (max) \\
+Cache & L1: 192 KiB, L2: 3 MiB, L3: 32 MiB \\
+Virtualization & AMD-V \\
+NUMA nodes & 1 (0--11) \\
+\bottomrule
+\end{tabularx}
+
+\subsubsection*{Motherboard and BIOS}
+\begin{tabularx}{\linewidth}{>{\hsize=0.3\hsize}X >{\hsize=0.7\hsize}X}
+\toprule
+\textbf{Component} & \textbf{Details} \\
+\midrule
+Manufacturer & Gigabyte Technology Co., Ltd. \\
+Model & A320M-H-CF \\
+Version & x.x \\
+BIOS Vendor & American Megatrends Inc. \\
+BIOS Version & F53 \\
+BIOS Release Date & 01/05/2021 \\
+\bottomrule
+\end{tabularx}
+
+\subsubsection*{Memory}
+\begin{tabularx}{\linewidth}{>{\hsize=0.3\hsize}X >{\hsize=0.7\hsize}X}
+\toprule
+\textbf{Component} & \textbf{Details} \\
+\midrule
+Total Installed & 32 GB DDR4 \\
+Configuration & 2 $\times$ 16 GB \\
+Speed & 2666 MT/s \\
+Error Correction & None (non-ECC) \\
+\bottomrule
+\end{tabularx}
+
+\subsubsection*{Storage Devices}
+\begin{tabularx}{\linewidth}{>{\hsize=0.3\hsize}X >{\hsize=0.7\hsize}X}
+\toprule
+\textbf{Device} & \textbf{Details} \\
+\midrule
+sda & Crucial MX500 SSD (CT500MX500SSD1) -- 465.8 GB \\
+sdb & GOODRAM CX400 SSD (SSDPR-CX400-01T-G2) -- 953.9 GB \\
+sdc & Samsung 870 EVO SSD -- 931.5 GB \\
+sdd & Samsung 840 EVO SSD -- 111.8 GB \\
+\bottomrule
+\end{tabularx}
+
+\subsection{Software Environment}
+\label{app:swspec}
+
+The experiments were conducted on an up-to-date Arch Linux system at the time
+of testing. The following table summarizes the operating system, kernel,
+drivers, and software environment used in the study.
+
+\begin{tabularx}{\textwidth}{>{\hsize=0.3\hsize}X >{\hsize=0.7\hsize}X}
+\toprule
+\textbf{Component} & \textbf{Details} \\
+\midrule
+\multicolumn{2}{c}{\textbf{System}} \\
+\midrule
+Operating System & Arch Linux (rolling release) \\
+Kernel & 6.16.4-arch1-1 \\
+DKMS Modules & AMDPowerProfiler/10.5, ryzen\_smu/162.e61177d \\
+\midrule
+\multicolumn{2}{c}{\textbf{Toolchain and Packages}} \\
+\midrule
+GCC & 15.2.1 (default), 14.3.1 (compatibility) \\
+Clang & 20.1.8 \\
+Linux Headers & 6.16.4-arch1-1, 6.12.44-1-lts \\
+Firmware & linux-firmware (20250808), including amdgpu, nvidia, radeon, etc. \\
+Other relevant packages & util-linux 2.41.1 \\
+\bottomrule
+\end{tabularx}
+
+\textbf{Systemd running services dump:}
+\begin{verbatim}
+UNIT                            LOAD   ACTIVE SUB     DESCRIPTION
+init.scope                      loaded active running System and Service Manager
+session-11.scope                loaded active running Session 11 of User root
+dbus-broker.service             loaded active running D-Bus System Message Bus
+getty@tty3.service              loaded active running Getty on tty3
+iwd.service                     loaded active running Wireless service
+systemd-journald.service        loaded active running Journal Service
+systemd-logind.service          loaded active running User Login Management
+systemd-networkd.service        loaded active running Network Configuration
+systemd-resolved.service        loaded active running Network Name Resolution
+systemd-timesyncd.service       loaded active running Network Time Synchronization
+systemd-udevd.service           loaded active running Rule-based Manager for Device Events and Files
+systemd-userdbd.service         loaded active running User Database Manager
+user@0.service                  loaded active running User Manager for UID 0
+dbus.socket                     loaded active running D-Bus System Message Bus Socket
+systemd-journald-dev-log.socket loaded active running Journal Socket (/dev/log)
+systemd-journald.socket         loaded active running Journal Sockets
+systemd-networkd.socket         loaded active running Network Service Netlink Socket
+systemd-udevd-control.socket    loaded active running udev Control Socket
+systemd-udevd-kernel.socket     loaded active running udev Kernel Socket
+systemd-userdbd.socket          loaded active running User Database Manager Socket
+
+Legend: LOAD   → Reflects whether the unit definition was properly loaded.
+    ACTIVE → The high-level unit activation state, i.e. generalization of SUB.
+    SUB    → The low-level unit activation state, values depend on unit type.
+
+20 loaded units listed.
+\end{verbatim}
+

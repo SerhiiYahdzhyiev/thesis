@@ -1,0 +1,63 @@
+Run plugin profiling with
+
+Max devices:          4
+Iterations:           100000
+Delay                 0.00 ms 
+Estimated runtime:    0.00s to 266.40s
+
+
+===== Device profiling =================================
+
+Device: CPU-0.package-0
+
+=====Metrics============================================
+
+Iterations:                100000
+
+Update frequency*:         0.000029s
+Change frequency*:         0.001945s
+
+
+========================================================
+
+===== Device profiling =================================
+
+Device: CPU-0.core
+
+=====Metrics============================================
+
+Iterations:                100000
+
+Update frequency*:         0.000034s
+Change frequency*:         0.002054s
+
+
+========================================================
+
+===== Device profiling =================================
+
+Device: Matisse.package
+
+=====Metrics============================================
+
+Iterations:                100000
+
+Update frequency*:         0.000151s
+Change frequency*:         0.000151s
+
+
+========================================================
+
+===== Device profiling =================================
+
+Device: Matisse.core
+
+=====Metrics============================================
+
+Iterations:                100000
+
+Update frequency*:         0.000152s
+Change frequency*:         0.000152s
+
+
+========================================================

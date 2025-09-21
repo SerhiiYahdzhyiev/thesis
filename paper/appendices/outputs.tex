@@ -1,0 +1,181 @@
+\section{Outputs}
+\label{app:outputs}
+
+\subsection*{\texttt{sudo ./profile}}
+
+\begin{multicols}{2}
+\begin{verbatim}
+Package Power: 19.981417 W
+Core Power: 2.917816 W
+Core[0] Power: 0.248008 W
+Core[1] Power: 0.182838 W
+Core[2] Power: 0.000000 W
+Core[3] Power: 0.186718 W
+Core[4] Power: 0.295289 W
+Core[5] Power: 0.000000 W
+Package Power: 32.399471 W
+Core Power: 13.874999 W
+Core[0] Power: 3.102678 W
+Core[1] Power: 3.797862 W
+Core[2] Power: 0.000000 W
+Core[3] Power: 1.784422 W
+Core[4] Power: 2.356227 W
+Core[5] Power: 0.000000 W
+Package Power: 32.102051 W
+Core Power: 13.625000 W
+Core[0] Power: 3.124228 W
+Core[1] Power: 1.900102 W
+Core[2] Power: 0.000000 W
+Core[3] Power: 1.309801 W
+Core[4] Power: 1.596721 W
+Core[5] Power: 0.000000 W
+Package Power: 32.024181 W
+Core Power: 13.562499 W
+Core[0] Power: 2.488970 W
+Core[1] Power: 1.930002 W
+Core[2] Power: 0.000000 W
+Core[3] Power: 2.139603 W
+Core[4] Power: 1.618680 W
+Core[5] Power: 0.000000 W
+Package Power: 32.012184 W
+Core Power: 13.499999 W
+Core[0] Power: 2.636422 W
+Core[1] Power: 1.955790 W
+Core[2] Power: 0.000000 W
+Core[3] Power: 4.565947 W
+Core[4] Power: 3.646379 W
+Core[5] Power: 0.000000 W
+Package Power: 32.893711 W
+Core Power: 14.400000 W
+Core[0] Power: 2.355475 W
+Core[1] Power: 1.753697 W
+Core[2] Power: 0.000000 W
+Core[3] Power: 4.182891 W
+Core[4] Power: 1.575245 W
+Core[5] Power: 0.000000 W
+Package Power: 33.018448 W
+Core Power: 14.533333 W
+Core[0] Power: 2.803603 W
+Core[1] Power: 2.174508 W
+Core[2] Power: 0.000000 W
+Core[3] Power: 5.589127 W
+Core[4] Power: 3.365249 W
+Core[5] Power: 0.000000 W
+Package Power: 33.871185 W
+Core Power: 15.370833 W
+Core[0] Power: 2.865544 W
+Core[1] Power: 1.825851 W
+Core[2] Power: 0.000000 W
+Core[3] Power: 6.858697 W
+Core[4] Power: 2.447402 W
+Core[5] Power: 0.000000 W
+Package Power: 35.800671 W
+Core Power: 17.258333 W
+Core[0] Power: 2.405156 W
+Core[1] Power: 1.663496 W
+Core[2] Power: 0.000000 W
+Core[3] Power: 3.952626 W
+Core[4] Power: 1.833735 W
+Core[5] Power: 0.000000 W
+Package Power: 35.741119 W
+Core Power: 17.258333 W
+Core[0] Power: 2.105530 W
+Core[1] Power: 1.773997 W
+Core[2] Power: 0.000000 W
+Core[3] Power: 5.434010 W
+Core[4] Power: 2.188492 W
+Core[5] Power: 0.000000 W
+\end{verbatim}
+\end{multicols}
+
+\clearpage
+\subsection*{\texttt{sudo ema\_profile -i 100000 -l 1}}
+
+\begin{verbatim}
+Max devices:          4
+Iterations:           100000
+Delay                 0.00 ms
+Estimated runtime:    0.00s to 266.40s
+
+===== Device profiling =================================
+
+Device: CPU-0.package-0
+
+=====Metrics============================================
+
+Update frequency*:         0.000029s
+Change frequency*:         0.001945s
+
+===== Device profiling =================================
+
+Device: CPU-0.core
+
+=====Metrics============================================
+
+Update frequency*:         0.000034s
+Change frequency*:         0.002054s
+
+===== Device profiling =================================
+
+Device: Matisse.package
+
+=====Metrics============================================
+
+Update frequency*:         0.000151s
+Change frequency*:         0.000151s
+
+===== Device profiling =================================
+
+Device: Matisse.core
+
+=====Metrics============================================
+
+Update frequency*:         0.000152s
+Change frequency*:         0.000152s
+\end{verbatim}
+
+\clearpage
+\subsection*{\texttt{sudo ema\_profile -i 10000 -l 1}}
+
+\begin{verbatim}
+Max devices:          4
+Iterations:           10000
+Delay                 0.00 ms
+Estimated runtime:    0.00s to 26.64s
+
+===== Device profiling =================================
+
+Device: CPU-0.package-0
+
+=====Metrics============================================
+
+Update frequency*:         0.000031s
+Change frequency*:         0.002001s
+
+===== Device profiling =================================
+
+Device: CPU-0.core
+
+=====Metrics============================================
+
+Update frequency*:         0.000022s
+Change frequency*:         0.001971s
+
+===== Device profiling =================================
+
+Device: Matisse.package
+
+=====Metrics============================================
+
+Update frequency*:         0.000154s
+Change frequency*:         0.000154s
+
+===== Device profiling =================================
+
+Device: Matisse.core
+
+=====Metrics============================================
+
+Update frequency*:         0.000153s
+Change frequency*:         0.000153s
+\end{verbatim}

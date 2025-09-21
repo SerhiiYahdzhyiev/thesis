@@ -1,0 +1,107 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[12pt]{article}
+\usepackage[a4paper, margin=2cm]{geometry}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{tikz}
+\usepackage{eso-pic}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{parskip}
+\usepackage{hyperref}
+\usepackage[acronym]{glossaries}
+\usepackage[style=authoryear,natbib=true,backend=biber]{biblatex}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{cleveref}
+\usepackage{xcolor}
+\usepackage{siunitx}
+\usepackage{multicol}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\lstset{
+  basicstyle=\ttfamily\footnotesize,
+  breaklines=true,
+  frame=single,
+  numbers=left,
+  numberstyle=\tiny,
+  keywordstyle=\color{blue},
+  commentstyle=\color{gray},
+  captionpos=b
+}
+
+\crefname{listing}{listing}{listings}
+\Crefname{listing}{Listing}{Listings}
+
+\addbibresource{references.bib}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\dissertationtitle}{Comparative Analysis of Energy Measurement Interfaces in AMD CPUs: Ryzen SMU vs. RAPL}
+\newcommand{\student}{Serhii Yahdzhyiev}
+\newcommand{\degree}{Bachelor of Software Engineering}
+\newcommand{\supervisor}{Alireza Mahmoud}
+\newcommand{\submissiontime}{Winter 2025}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\renewcommand\maketitle{
+	{
+		\center
+		\begin{tikzpicture}[remember picture, overlay]
+			\node[opacity=0.2,inner sep=0pt] at (current page.south) [yshift=5cm]{
+				\includegraphics[width=\paperwidth, height=\paperheight, keepaspectratio]{assets/campus}
+			};
+		\end{tikzpicture}
+		\includegraphics[width=0.6\textwidth]{assets/logo}\par
+		{\scshape\LARGE\bf Gisma University of Applied Sciences \par}
+		{\scshape\Large\bf Department of Computer and Data Sciences \par}
+		\vspace{2cm}
+		\rule{\linewidth}{0.5mm}\par
+		{\huge\bfseries\dissertationtitle\par} 
+		\rule{\linewidth}{0.5mm}\par
+		\vspace{0.2cm}
+		{\Large\bf\student\par}
+		\vspace{2cm}
+		{\large Submitted in partial fulfillment of the requirements for the degree of\par}
+		{\Large\bf\degree\par}
+		\vspace{1cm}
+		{\large Under supervision of\par}
+		{\large\bf\supervisor\par}
+		\vspace{1cm}
+		{\large\submissiontime\par}
+		\thispagestyle{empty} 
+		\newpage
+	}
+}
+\renewcommand{\thesection}{\arabic{section}}
+\input{acronyms.tex}
+\makeglossaries
+
+\begin{document} 
+\pagestyle{plain}
+\pagenumbering{gobble}
+\maketitle
+
+\include{abstract}
+\tableofcontents 
+\clearpage
+
+\pagenumbering{arabic}
+\input{sections/introduction}
+\input{sections/literature}
+\input{sections/methodology}
+\input{sections/findings}
+\input{sections/conclusions}
+\input{sections/future}
+\renewcommand{\bibname}{References}
+\printbibliography
+\clearpage
+\printglossaries
+\clearpage
+\appendix
+\input{appendices/setup.tex}
+\clearpage
+\input{appendices/listings.tex}
+\clearpage
+\input{appendices/outputs.tex}
+\clearpage
+\input{appendices/plots.tex}
+\end{document}

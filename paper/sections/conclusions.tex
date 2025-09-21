@@ -1,0 +1,23 @@
+\section{Conclusions}
+\label{sec:conclusions}
+
+Overall findings indicate that AMD’s \gls{SMU} (via the \texttt{ryzen\_smu} kernel
+driver) and the \gls{RAPL} interface provide different numerical estimates of
+energy consumption for identical workloads and have no proven correlation or
+similarity.
+
+While this does not preclude the existence of more subtle "trends" and
+similarities, such effects were not detectable within the scope and time
+constraints of the present work.
+
+Large discrepancies in absolute values can be explained by both imperfections
+in the \emph{Ryzen Plugin} implementation (values interpretation and/or conversion
+errors, numerical types conversion issues, inappropriate/imperfect method for
+integrating power into energy, etc.) and lack of official documentation regarding
+the access to these values.
+
+Nevertheless, the author is convinced that AMD telemetry access interfaces may
+offer advantages over alternatives in several important respects, provided the
+deficiencies in the methodology and implementations presented in this paper are
+addressed. Potential areas for these improvements and other details are described
+in the next section.

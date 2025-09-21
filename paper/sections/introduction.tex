@@ -1,0 +1,118 @@
+\section{Introduction}
+
+\subsection{Background}
+
+It is widely acknowledged that the demand for computational power has
+been steadily increasing in recent years, driven both by rapid development of
+\gls{AI} and advances in \gls{HPC} applications. Recent studies show that
+large-scale AI-models training can impose significant power (electrical)
+requirements at the compute node level, highlighting the growing importance
+of energy management in computational infrastructures \parencite{Latif_2025}.
+Additionally, international assessments show that digital infrastructures
+will continue to exert considerable pressure on global energy systems
+\parencite{IEA2025_AI_Energy}.
+
+This trend is further accentuated by the global emphasis on sustainable
+development, where efficient utilization of energy and minimization of
+environmental impact are increasingly prioritized. In \gls{HPC} environments
+energy-aware practices have emerged as critical design criteria: evidenced by
+initiatives such as \emph{Green500} ranking and related analytical studies
+\parencite{GreenHPC}. In order to formulate effective optimization strategies,
+regulatory guidelines and operational policies it is essential to obtain precise
+measurements of energy consumption across various computational systems'
+components, including \gls{CPU}, \gls{GPU}, memory, specific network-attached
+hardware, and interconnects.
+
+Several software frameworks and tools have been developed to facilitate
+reliable collection of power and energy data (and also other sensor-type
+metrics, out of scope of this work, e.g. temperature readings).
+
+Representative examples include:
+\begin{itemize}
+  \item \emph{EMA} \footcite{EMA_git},
+  \item \emph{Scaphandre} \footcite{Scaphandre},
+  \item \emph{Alumet} \footcite{Alumet},
+  \item \emph{EAR} \footcite{EAR}, and
+  \item \emph{ClusterCockpit} \footcite{ClusterCockpit}.
+\end{itemize}
+
+Each of these tools aims to integrate energy measurement capabilities within
+broader performance monitoring and management workflows while having various
+subsets of features and/or limitations.
+
+Among the components of modern computing systems, \gls{CPU}s occupy a central
+role in both \gls{HPC} and \emph{Cloud} environments, so comprehension
+of their energy characteristics is of great importance, particularly
+in the context of evolving \gls{CPU} market. Although, Intel has historically
+maintained a dominant position in server and desktop segments, AMD has
+achieved notable gains over the past decade. Contemporary market analyses
+indicate that AMD has captured a substantial share of both server and
+desktop markets, with penetration exceeding 40\% among consumer systems
+\parencite{NetworkWorld2025_Q1ServerShare}. Moreover, some economic researches
+highlight the strategic significance of competitive dynamics
+and innovation within the microprocessor industry
+\parencite{GoettlerGordon2009_Competition}.
+
+Energy measurement of \gls{CPU}s is typically facilitated through hardware- and
+firmware-/software- level interfaces exposed to the \gls{OS} kernels.
+
+Intel platforms predominantly employ the \gls{RAPL} mechanism, which provides
+estimations of energy consumption for the \gls{CPU} package and its subdomains,
+mitigating security risks (such as power-based side channel attacks
+\parencite{PwrLeak_2023}) by including filtering behaviour for model-specific
+registers.\parencite{IntelRAPL}
+
+AMD processors offer a variety of telemetry mechanisms and \gls{SMU}s aside,
+among which the \texttt{ryzen\_smu} \parencite{RyzenSMU_GitHub} driver provides
+low-level access to power measurement readings. At the same time most of the
+modern AMD \gls{CPU} model families also support \gls{RAPL} (with some slight
+differences in realization).
+
+Each interface presents distinct trade-offs in terms of measurements
+accuracy, accessibility, and operational overhead. This motivates a
+systematic comparative evaluation.
+
+\subsection{Problem Statement}
+
+The landscape of \gls{CPU} energy measurement interfaces on AMD platforms is
+characterized by the coexistence of vendor-specific solutions and
+adaptations of mechanisms originally designed for Intel \gls{CPU}s. In
+particular, the availability of both the \texttt{ryzen\_smu} interfaces
+and AMD's realization of the \gls{RAPL} mechanism introduces uncertainty in the
+selection of appropriate tools for high-fidelity measurement and
+integration with existing monitoring frameworks.
+
+While \gls{RAPL} is widely adopted in academic and industrial contexts, its
+port to AMD hardware differs in certain aspects and has its specific limitations.
+Conversely, the \texttt{ryzen\_smu} driver offers access to low-level telemetry,
+yet its practical benefits over \gls{RAPL} remain largely unexplored.
+
+\subsection{Research Questions}
+
+Considering the above following research questions were formulated:
+
+\begin{enumerate}
+  \item To what extent do energy measurements obtained from the
+        \gls{SMU} (\gls{PM} Table) and \gls{RAPL} interfaces for the
+        \emph{package} and \emph{core} power domains show similar
+        dynamic and temporal trends?
+      \item What is the magnitude of errors (\gls{RMSE}, \gls{MAE}, \gls{MAPE}),
+        and to what degree are the two interfaces theoretically interchangeable
+        in practical energy measurement tasks?
+      \item How do differences in the supported sampling rates between
+        \gls{RAPL} and \gls{SMU} affect the temporal resolution of measurements,
+        and what are the implications for future high-frequency energy profiling?
+\end{enumerate}
+
+\subsubsection{Considerations}
+
+Due to the time and resource limitations this study focuses primarily on the
+energy measurements on \emph{Software Level}. That means that no objective
+\emph{source of truth} (e.g. external \emph{Power Measurement Device}
+attached to the \gls{PC}'s \gls{PSU}) was used.
+
+Both interfaces research in this work provide power/energy estimations based
+on some internal mechanisms based on combination of hardware counters and
+mathematical estimation models. Which in turn means that the energy and/or
+power values obtained through those mechanisms do not reflect the 100\%
+accurate real/physical consumption.
