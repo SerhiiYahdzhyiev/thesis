@@ -46,8 +46,8 @@ def plot_bland_altman(mean_vals, diff_vals, title, out_file):
     plt.axhline(loa_upper, color="blue", linestyle="--", label=f"+1.96 SD = {loa_upper:.2f}")
     plt.axhline(loa_lower, color="blue", linestyle="--", label=f"-1.96 SD = {loa_lower:.2f}")
     plt.axhline(0, color="gray", linestyle=":")
-    plt.xlabel("Mean of RAPL and RYZEN (µJ)")
-    plt.ylabel("Difference (RAPL − RYZEN) (µJ)")
+    plt.xlabel("Mean of RAPL/RYZEN")
+    plt.ylabel("Difference RAPL/RYZEN")
     plt.title(title)
     plt.legend(frameon=False)
     plt.tight_layout()
@@ -77,14 +77,12 @@ def main():
     plots_dir = cwd / "plots"
     plots_dir.mkdir(exist_ok=True)
 
-    # Глобальные метрики по доменам
     for domain in wide.index.get_level_values("domain").unique():
         dsub = wide.xs(domain, level="domain")
         metrics = compute_metrics(dsub["RAPL"], dsub["RYZEN"])
         metrics.update({"domain": domain, "region": "ALL"})
         results.append(metrics)
 
-        # График на домен
         plot_bland_altman(
             metrics["bland_mean_series"],
             metrics["bland_diff_series"],
@@ -92,7 +90,6 @@ def main():
             plots_dir / f"bland_altman_{domain}.png"
         )
 
-    # Метрики и графики по каждой паре домен+регион
     for domain in wide.index.get_level_values("domain").unique():
         for region in wide.index.get_level_values("region").unique():
             try:

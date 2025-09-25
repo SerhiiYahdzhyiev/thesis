@@ -10,5 +10,5 @@ main: main.tex references.bib
 
 clean:
 	rm -f *.pdf *.aux *.toc *.out *.bbl *.log *.blg *.bcf *.xml *.glg *.glo \
-	*.gls *.ist *.acn *.acr *.alg
+	*.gls *.ist *.acn *.acr *.alg *.lof *.lot
 	rm -f sections/*.aux

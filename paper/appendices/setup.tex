@@ -10,6 +10,8 @@ The information is gathered using \texttt{lscpu}, \texttt{dmidecode},
 \subsection{Hardware Specifications}
 \label{app:hwspec}
 
+\begin{table}[h]
+\caption{Hardware Components Details (CPU)}
 \subsubsection*{CPU}
 \begin{tabularx}{\linewidth}{>{\hsize=0.3\hsize}X >{\hsize=0.7\hsize}X}
 \toprule
@@ -24,8 +26,11 @@ Virtualization & AMD-V \\
 NUMA nodes & 1 (0--11) \\
 \bottomrule
 \end{tabularx}
+\end{table}
 
 \subsubsection*{Motherboard and BIOS}
+\begin{table}[h]
+\caption{Hardware Components Details (Motherboard and BIOS)}
 \begin{tabularx}{\linewidth}{>{\hsize=0.3\hsize}X >{\hsize=0.7\hsize}X}
 \toprule
 \textbf{Component} & \textbf{Details} \\
@@ -38,8 +43,11 @@ BIOS Version & F53 \\
 BIOS Release Date & 01/05/2021 \\
 \bottomrule
 \end{tabularx}
+\end{table}
 
 \subsubsection*{Memory}
+\begin{table}[h]
+\caption{Hardware Components Details (Memory)}
 \begin{tabularx}{\linewidth}{>{\hsize=0.3\hsize}X >{\hsize=0.7\hsize}X}
 \toprule
 \textbf{Component} & \textbf{Details} \\
@@ -50,8 +58,11 @@ Speed & 2666 MT/s \\
 Error Correction & None (non-ECC) \\
 \bottomrule
 \end{tabularx}
+\end{table}
 
 \subsubsection*{Storage Devices}
+\begin{table}[h]
+\caption{Hardware Components Details (Storage)}
 \begin{tabularx}{\linewidth}{>{\hsize=0.3\hsize}X >{\hsize=0.7\hsize}X}
 \toprule
 \textbf{Device} & \textbf{Details} \\
@@ -62,6 +73,7 @@ sdc & Samsung 870 EVO SSD -- 931.5 GB \\
 sdd & Samsung 840 EVO SSD -- 111.8 GB \\
 \bottomrule
 \end{tabularx}
+\end{table}
 
 \subsection{Software Environment}
 \label{app:swspec}
@@ -70,6 +82,8 @@ The experiments were conducted on an up-to-date Arch Linux system at the time
 of testing. The following table summarizes the operating system, kernel,
 drivers, and software environment used in the study.
 
+\begin{table}[h]
+\caption{Software Components Details}
 \begin{tabularx}{\textwidth}{>{\hsize=0.3\hsize}X >{\hsize=0.7\hsize}X}
 \toprule
 \textbf{Component} & \textbf{Details} \\
@@ -89,6 +103,7 @@ Firmware & linux-firmware (20250808), including amdgpu, nvidia, radeon, etc. \\
 Other relevant packages & util-linux 2.41.1 \\
 \bottomrule
 \end{tabularx}
+\end{table}
 
 \textbf{Systemd running services dump:}
 \begin{verbatim}
@@ -103,7 +118,8 @@ systemd-logind.service          loaded active running User Login Management
 systemd-networkd.service        loaded active running Network Configuration
 systemd-resolved.service        loaded active running Network Name Resolution
 systemd-timesyncd.service       loaded active running Network Time Synchronization
-systemd-udevd.service           loaded active running Rule-based Manager for Device Events and Files
+systemd-udevd.service           loaded active running Rule-based Manager for
+    	    	    	    	Device Events and Files
 systemd-userdbd.service         loaded active running User Database Manager
 user@0.service                  loaded active running User Manager for UID 0
 dbus.socket                     loaded active running D-Bus System Message Bus Socket

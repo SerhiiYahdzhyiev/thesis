@@ -22,3 +22,5 @@ paper/**/*.ist
 paper/**/*.acn
 paper/**/*.acr
 paper/**/*.alg
+paper/**/*.lof
+paper/**/*.lot

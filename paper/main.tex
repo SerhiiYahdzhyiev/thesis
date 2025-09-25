@@ -82,6 +82,9 @@
 
 \include{abstract}
 \tableofcontents 
+\listoftables
+\listoffigures
+\printglossaries
 \clearpage
 
 \pagenumbering{arabic}
@@ -90,13 +93,12 @@
 \input{sections/methodology}
 \input{sections/findings}
 \input{sections/conclusions}
-\input{sections/future}
+\clearpage
 \renewcommand{\bibname}{References}
 \printbibliography
 \clearpage
-\printglossaries
-\clearpage
 \appendix
+\section*{Appendices}
 \input{appendices/setup.tex}
 \clearpage
 \input{appendices/listings.tex}

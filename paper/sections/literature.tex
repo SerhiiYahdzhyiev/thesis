@@ -1,8 +1,8 @@
 \section{Literature Review}
 
-The question of accurate energy profiling for \gls{CPU}s and other compute
-components has attracted substantial attention in both academic and
-industrial communities. Prior work can be grouped into:
+The question of accurate energy profiling for \gls{CPU}s and other components
+of a computational system has attracted substantial attention in both
+academic and industrial communities. Prior work can be grouped into:
 \begin{itemize}
   \item Studies that validate and quantify characteristics of
     software-accessible counters (e.g. \gls{RAPL} and analogous interfaces).
@@ -17,10 +17,10 @@ exposure mechanisms such as \gls{RAPL} and their operational caveats.
 software-based \gls{CPU} energy measurement techniques and discuss OS
 integration issues and practical limitations of \gls{RAPL}. Similarly,
 \textcite{RAPL_Strategies} focus on practical strategies to employ
-\gls{RAPL} in \gls{HPC} workflows and discuss measurement placement and workflow
-integration. While these works are valuable, the majority of existing
+\gls{RAPL} in \gls{HPC} workflows and discuss measurement placement and
+workflow integration. While these works are valuable, the majority of existing
 comparative literature still places \gls{RAPL} at the center of the analysis,
-leaving vendor-specific telemetry mechanisms (e.g. AMD \gls{SMU} / Power Metrics
+leaving vendor-specific telemetry mechanisms (e.g. AMD \gls{SMU} / \gls{PM}
 tables) less explored.
 
 From a systems and instrumentation perspective, several peer-reviewed
@@ -46,7 +46,7 @@ There is also a body of work addressing repeatability and the
 environmental / carbon accounting of computation. For example,
 \textcite{GreenAlgos} propose standardized reporting practices
 for computational carbon footprints and emphasize traceable,
-reproducible measurement and reporting; such guidelines inform the
+reproducible measurements and reporting; such guidelines inform the
 methodological choices in this study (sampling, metadata recording,
 machine specification capture).
 
@@ -55,20 +55,20 @@ inform this work's design:
 
 \begin{enumerate}
   \item \gls{RAPL} is well-studied and widely used, but has documented limits
-    (domain ambiguity, register overflows, aggregation issues) that
-    motivate validation against alternative telemetry sources.
-  \item Vendor-native telemetry (AMD \gls{SMU} / \gls{PM} tables) is promising but
-    underrepresented in comparative, peer-reviewed studies; careful
-    validation and conversion (power $\rightarrow$ energy) are required.
-  \item Reproducible experimental methodology (clear metadata, regular
-    resampling, overflow handling, statistical tests) is essential to
-    produce defensible comparisons.
+    of power domains ambiguity, register overflows, and aggregation issues
+    that motivate validation against alternative telemetry sources.
+  \item Vendor-native telemetry (AMD \gls{SMU} / \gls{PM} tables) is promising
+    but underrepresented in comparative, peer-reviewed studies, which makes
+    careful validation of the chosen methodological approaches essential.
+  \item Reproducible experimental methodology, that leverages clear metadata,
+    regular re-sampling, overflow handling and statistical tests, is essential
+    to produce defensible comparisons.
 \end{enumerate}
 
-This thesis builds on the published methods and gaps above: the core
-goal is to provide a systematic, statistically grounded comparison of
-\gls{RAPL} and AMD-native telemetry (\gls{SMU} / \gls{PM} tables) on AMD \gls{CPU}s,
-closing a documented gap in the literature by:
+This thesis builds on the published methods and gaps above: the core goal is
+to provide a systematic, statistically grounded comparison of \gls{RAPL} and
+AMD-native telemetry (\gls{SMU} / \gls{PM} tables) on AMD \gls{CPU}s, closing 
+a documented gap in the literature by:
 
 \begin{itemize}
   \item Instrumenting both sources simultaneously.

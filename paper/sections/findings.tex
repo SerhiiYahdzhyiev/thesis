@@ -1,7 +1,32 @@
 \section{Findings}
 \label{sec:findings}
 
-\begin{table}[htbp]
+
+The analysis of metrics and plots revealed no evidence of dynamic agreement
+between \texttt{ryzen\_smu} and \gls{RAPL} energy-measurement interfaces
+across the investigated domains and workload regions.
+
+Key observations are as follows:
+
+\begin{itemize}
+  \item \textbf{Correlation:} Pearson coefficients are close to
+  zero in all cases (\(r \in [-0.11,0.11]\), \(p \gg 0.05\) (\cref{tab:stats})),
+  indicating absence of linear correlation between readings for both \emph{core}
+  and \emph{package} domains.
+
+  \item \textbf{Error Metrics:} Absolute error metrics are large across
+  all regions. \gls{MAE} and \gls{RMSE} frequently reach \(10^{16}\!-
+  \!10^{17}\,\mu\mathrm{J}\) (\cref{tab:stats}), and \gls{MAPE} in most cases
+  exceed several orders of magnitude, underscoring substantial differences in
+  absolute energy values.
+
+  \item \textbf{Bland–Altman Plots:} Mean differences are
+  far from zero with very wide limits of agreement, highlighting a systematic
+  bias and considerable dispersion between two measurement sources.
+\end{itemize}
+
+\begin{table}[h]
+\caption{Statistics (all absolute values provided in micro-joules).}
 \scriptsize
 \setlength{\tabcolsep}{3pt}
 \renewcommand{\arraystretch}{1.1}
@@ -47,32 +72,8 @@ package & static\_10s\\
 package & static\_60s\\
 \bottomrule
 \end{tabularx}
-\caption{Statistics.}
 \label{tab:stats}
 \end{table}
-
-The analysis of metrics and plots revealed no evidence of dynamic agreement
-between \texttt{ryzen\_smu} and \gls{RAPL} energy-measurement interfaces
-across the investigated domains and workload regions.
-
-Key observations are as follows:
-
-\begin{itemize}
-  \item \textbf{Correlation:} Pearson coefficients are close to
-  zero in all cases (\(r \in [-0.11,0.11]\), \(p \gg 0.05\) (\cref{tab:stats})),
-  indicating absence of linear correlation between readings for both \emph{core}
-  and \emph{package} domains.
-
-  \item \textbf{Error Metrics:} Absolute error metrics are large across
-  all regions. \gls{MAE} and \gls{RMSE} frequently reach \(10^{16}\!-
-  \!10^{17}\,\mu\mathrm{J}\) (\cref{tab:stats}), and \gls{MAPE} in most cases
-  exceed several orders of magnitude, underscoring substantial differences in
-  absolute energy values.
-
-  \item \textbf{Bland–Altman Plots:} Mean differences are
-  far from zero with very wide limits of agreement, highlighting a systematic
-  bias and considerable dispersion between two measurement sources.
-\end{itemize}
 
 \begin{figure}[htbp]
     \centering
@@ -92,51 +93,51 @@ are available in Appendix \cref{app:plots}.
 \subsection{Per-Core Measurements Potential}
 
 It was identified during this research that \texttt{ryzen\_smu} kernel driver
-allows to obtain per-core power readings of the \gls{CPU}. However,
+allows to obtain per-core power readings of the \gls{CPU}; however,
 observations of those readings gave a strong suspicion about their reliability
-. As described in \cref{sec:limncons}, since the mappings of \gls{PM} table
-were reverse engineered, it is highly possible that the values read from the
-addresses are not the power readings, but rather some other unrelated
+. As described in \cref{sec:limncons}, since the mappings of the \gls{PM}
+table were reverse engineered, it is highly possible that the values read
+from the addresses are not the power readings, but rather some other unrelated
 telemetry values.
 
 The main source of concern is the fact that in all the test runs the third
-and sixth cores consistently reported 0 power consumption. (Can be inspected
-in the raw measurement outputs included in supporting repository
-\footcite{yahdzhyiev2025repo}).
+and sixth cores consistently reported 0 power consumption. These results can
+be inspected in the raw measurement outputs included in the supporting
+repository \footcite{yahdzhyiev2025repo}).
 
 With that mentioned, the fact of the possibility to have per-core measurements
 available highlights potential benefits of using \texttt{ryzen\_smu} for
 energy readings in \gls{HPC} cluster environments where resource sharing is
-supported (meaning two jobs/processes occupying different physical cores of 
-the same \gls{CPU}).
+supported, meaning two jobs or processes occupying different physical cores
+of the same \gls{CPU}).
 
 \subsection{Sampling/polling Rate Experiments}
 \label{sec:find:rates}
 
-Despite the statement in \textcite{ryzen_managment_linux} that
+Despite the statement in \texttt{ryzen\_managment\_linux}
+\parencite{ryzen_managment_linux} that
 \texttt{ryzen\_smu} driver intentionally limits the refresh rate to
 approximately 1 milli-second small practical tests/experiments with
 \texttt{monitor} (see \footcite{yahdzhyiev2025repo} \path{code/src/monitor.c})
 and \texttt{profile} (see \footcite{yahdzhyiev2025repo}
 \path{code/src/profile.c}) showed the possibility of obtaining distinct energy
 readings from \gls{PM} Table on much higher rates (approx. 1 micro-second)
-(as also mentioned in \cref{sec:limncons}).
+(as also mentioned in \cref{sec:limncons}). The outputs of \texttt{sudo
+./profile} with polling/sampling rate set to 1 micro-second can be inspected
+in \cref{app:outputs}.
 
-The outputs of \texttt{sudo ./profile} with polling/sampling rate set to
-1 micro-second can be inspected in \cref{app:outputs}.
-
-Additional tests were carried out via \gls{EMA} (included) profiling utility
-(which also was the author's contribution \footcite{
+Additional tests were carried out via \gls{EMA} profiling utility, which also
+was an author's contribution \footnote{
   Source code available at \url{
     https://github.com/SerhiiYahdzhyiev/EMA/tree/profiler/utils/profiler
   }
-}), additionally proving higher sampling frequency capabilities of
-\texttt{ryzen\_smu}. Raw outputs available in early mentioned supporting
+}), and proved higher sampling frequency capabilities of \texttt{ryzen\_smu}.
+The raw outputs are available in previousely mentioned supporting
 repository and also in Appendix \cref{app:outputs} (raw outputs were truncated
 for clarity and conciseness).
 
 These results might be explained by the combination of the statements from the
-same source \parencite{ryzen_managment_linux}:
+same source:
 
 \begin{itemize}
   \item The \gls{SMU} itself is sampling its internal sensors at a very high
@@ -149,9 +150,9 @@ same source \parencite{ryzen_managment_linux}:
 \end{itemize}
  \parencite{ryzen_managment_linux}
 
-As can be seen in the last statement the model and architecture of the target
-\gls{CPU} for the contents of the source differs from the test system's (
-see \cref{app:hwspec}), additionally the source does not specify which
+As can be seen in the latter statement the model and architecture of the
+target \gls{CPU} for the contents of the source differs from the test system's
+(see \cref{app:hwspec}), additionally the source does not specify which
 \gls{BIOS} version was used to test/obtain basis for the statements provided.
 
 The mentioned small tests/experiment can be used as a basis for a separate
@@ -159,4 +160,4 @@ research with extended methodology that should include external \gls{PMD}
 as the source of truth to evaluate the reliability of the readings
 obtained at increased sampling rates. They also can be a part of the
 basis for extensions and improvements of the methodology used for this
-research.
+research which in turn will be mentioned in the following sections.
