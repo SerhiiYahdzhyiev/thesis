@@ -17,7 +17,7 @@ A repository for the Bachelor Thesis paper and Viva Presentation Slides.
 - `code` - subdirectory holding source codes for tools and programs used
            to complete this thesis
 
-- `scripts` - subdirectory holding some supporting helper scripts used to
+- `scripts` - subdirectory holding some bsupporting helper scripts used to
               gather data for this research and collect dumps
 
 ## Dependencies/Requirements
@@ -25,6 +25,7 @@ A repository for the Bachelor Thesis paper and Viva Presentation Slides.
 1. [Tex Live](https://tug.org/texlive/). - A distribution of LaTeX that I've used.
    You may use a different one, but than you would probably need to adjust your build process accordingly.
 2. [GNU Make](https://www.gnu.org/software/make/) - Simplifies/automates build processes.
+3. [Marp CLI](https://github.com/marp-team/marp-cli) *(As stand-along binary)*
 
 ## Build
 
@@ -33,6 +34,11 @@ A repository for the Bachelor Thesis paper and Viva Presentation Slides.
 1. Navigate to `paper` subdirectory: `cd paper`.
 2. Build main pdf file with: `make`.
 3. (Optional) Use `make clean` to clean out all the auxilary files created by `pdflatex` and `bibtex`.
+
+### Slides
+
+1. Navigate to `slides` subdirectory.
+2. Build the pdf by running: `make pdf`.
 
 ## Code
 
