@@ -5,6 +5,9 @@ code/profile
 code/monitor
 code/bench
 
+slides/*.pdf
+slides/*.html
+
 
 paper/*.pdf
 paper/**/*.aux
