@@ -20,6 +20,10 @@ GH&nbsp;1023645
 
 *TODO: Add content*
 
+Some content that needs a citation <sup>[1](https://example.com/paper)</sup>.
+
+<!-- _footer: '[1] [https://example.com/paper](https://example.com/paper)' -->
+
 ---
 
 # Introduction
