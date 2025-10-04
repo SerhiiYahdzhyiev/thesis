@@ -112,6 +112,22 @@ Some content that needs a citation <sup>[1](https://example.com/paper)</sup>.
 
 # Methodology
 
+## Measurements Framework / Regions API
+
+![center w:800px](assets/ema_region_api.svg)
+
+---
+
+# Methodology
+
+## Measurements Framework / Overflow Handling
+
+![center w:1200px](assets/ema_overflow.svg)
+
+---
+
+# Methodology
+
 ## Data Collection
 
 *TODO: Add content or remove this slide*
@@ -130,7 +146,7 @@ Some content that needs a citation <sup>[1](https://example.com/paper)</sup>.
 
 ## Per-Core Measurements
 
-*TODO: Add content*
+![center w:1200px](assets/core_sharing.svg)
 
 ---
 
@@ -152,9 +168,9 @@ Some content that needs a citation <sup>[1](https://example.com/paper)</sup>.
 
 # Findings & Conclusions
 
-## Future Work
+## Future Work / Improved Methodology Concept
 
-*TODO: Add content*
+![center w:1200](assets/ryzend.svg)
 
 ---
 
