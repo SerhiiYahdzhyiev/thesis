@@ -144,6 +144,14 @@ Some content that needs a citation <sup>[1](https://example.com/paper)</sup>.
 
 # Findings & Conclusions
 
+## Sampling Rate Limits II
+
+![center w:700px](assets/psampling_2.svg)
+
+---
+
+# Findings & Conclusions
+
 ## Future Work
 
 *TODO: Add content*
