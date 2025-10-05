@@ -233,6 +233,51 @@ GH&nbsp;1023645
 
 ---
 
+# Methodology
+
+## EMA / Ryzen Plug-in
+
+### Practical considerations:
+
+- The integration method corresponds to a rectangular approximation, simple and
+  deterministic, but can miss short high-power spikes
+
+- For RAPL/MSR measurements EMA’s overflow handling utilities are applied to
+  handle counter wraparound; for Ryzen plug-in readings the handling behavior is
+  disabled due to limitations
+
+---
+
+# Methodology
+
+## Benchmarking
+
+### Power Domains
+
+- Package
+
+- Core
+
+---
+
+# Methodology
+
+## Benchmarking
+
+### Workload Patterns
+
+  - A short steady high computational load region.
+
+  - A long steady high computational load region.
+
+  - A short region with burst (spiked) computational load.
+
+  - A long region with burst (spiked) computational load.
+
+  - A short idle load region (sleep).
+
+---
+
 # Findings & Conclusions
 
 ## Main Hypothesis
