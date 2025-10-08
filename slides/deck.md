@@ -95,8 +95,7 @@ GH&nbsp;1023645
 
 - Comparisons between software and external/hardware meters
 
-- Methodical works on measurement protocols, reproducibility and energy accounting
-  in HPC contexts
+- Methodical works on measurement protocols, reproducibility and energy accounting in HPC contexts
 
 ---
 
